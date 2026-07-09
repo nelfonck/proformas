@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:intl/intl.dart';
 import 'package:proformas/models/articulo.dart';
 import 'package:proformas/models/articulomla.dart';
@@ -28,7 +27,6 @@ import 'package:proformas/services/helperservice.dart';
 class ArticuloViewModel extends ChangeNotifier {
   bool _disposed = false;
   BuildContext? _context ;
-  BroadcastReceiver? receiver ;
   final ConfigService _configService = ConfigService();
   final ArticuloRepository _repository = ArticuloRepository(ArticuloService(), ConfigService()); 
   final FamiliaRepository _familiaRepository = FamiliaRepository(FamiliaService(), ConfigService()); 
@@ -78,9 +76,6 @@ class ArticuloViewModel extends ChangeNotifier {
         Navigator.of(context).pushReplacementNamed('config');
       } else {
         useBroadCast = _configService.getUseBroadcast();
-        if (useBroadCast!){
-          setReceiver();
-        }
         await _getFamilias().onError((error, stackTrace) => Dlg.showError( _context! , error.toString()));
         await _getMarcas().onError((error, stackTrace) => Dlg.showError( _context! , error.toString()));
         await _getImpuestos().onError((error, stackTrace) => Dlg.showError( _context! , error.toString()));
@@ -94,17 +89,6 @@ class ArticuloViewModel extends ChangeNotifier {
   void dispose() {
     _disposed = true;
     super.dispose();
-  }
-
-  void setReceiver(){
-    String? receiverLink = _configService.getBroadCastReceiverLink();
-    if (receiverLink!=null){
-      receiver = BroadcastReceiver(
-        names: <String>[
-          receiverLink,
-        ],
-      );
-    }
   }
 
   Future<void> _getFamilias() async {
@@ -349,12 +333,12 @@ class ArticuloViewModel extends ChangeNotifier {
   void findItem() async{
     if ( codigoController.text.isEmpty ) return ;
     Dlg.showLoading(_context!, 'Obteniendo datos del articulo');
-    Map<String, dynamic> respArticulo = await getArticulo( codigoController.text ).onError((error, stackTrace) {
+    Map<String, dynamic>? respArticulo = await getArticulo( codigoController.text ).onError((error, stackTrace) {
       Navigator.of(_context!).pop();
       Dlg.showError(_context!, error.toString());
     });
 
-    if ( respArticulo['statusCode'] == 200 ){
+    if ( respArticulo?['statusCode'] == 200 ){
 
       Map<String,dynamic> respArticuloMla = await getArticulomla( codigoController.text ).onError((error, stackTrace) {
         Navigator.of(_context!).pop();
@@ -368,7 +352,7 @@ class ArticuloViewModel extends ChangeNotifier {
           Dlg.showWarning(_context!, respArticuloMla['message']);
       }
 
-    } else if ( respArticulo['statusCode'] == 201 ){
+    } else if ( respArticulo?['statusCode'] == 201 ){
       if (articulo != null){
         articulo?.costo = 0;
         articulo?.venta = 0;
@@ -378,7 +362,7 @@ class ArticuloViewModel extends ChangeNotifier {
         // ignore: use_build_context_synchronously
         Navigator.of(_context!).pop();
         // ignore: use_build_context_synchronously
-        Dlg.showWarning(_context!, respArticulo['message']);
+        Dlg.showWarning(_context!, respArticulo?['message']);
     }
     codigoFocusNode.requestFocus();
     HelperService.selectText( codigoController );

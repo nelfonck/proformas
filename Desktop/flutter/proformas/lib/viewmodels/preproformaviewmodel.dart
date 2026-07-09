@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:proformas/providers/userprovider.dart';
 import 'package:provider/provider.dart';
 import 'package:proformas/models/cliente.dart';
@@ -12,7 +11,6 @@ import 'package:proformas/services/preproformaservice.dart';
 
 class PreProformaViewModel extends ChangeNotifier {
   final ConfigService _configService = ConfigService();
-  BroadcastReceiver? receiver ;
 
   final PreProformaRepository _repository = PreProformaRepository(PreProformaService(), ConfigService()); 
   PreProforma? preProforma ; 
@@ -33,9 +31,7 @@ class PreProformaViewModel extends ChangeNotifier {
         Navigator.of(context).pushReplacementNamed('config');
       } else {
         useBroadCast = _configService.getUseBroadcast();
-        if (useBroadCast?? false){
-          setReceiver();
-        }
+  
         getPreproformaDetalleById().onError((error, stackTrace) {
           if (context.mounted){
             Dlg.showError(context, error.toString());
@@ -49,14 +45,7 @@ class PreProformaViewModel extends ChangeNotifier {
     return preProforma?.enviada;
   }
 
-  void setReceiver(){
-    String? receiverLink = _configService.getBroadCastReceiverLink();
-    receiver = BroadcastReceiver(
-    names: <String>[
-      receiverLink ?? '',
-    ],
-  );
-  }
+
 
   void setCantidad( double?  newCount ) {
     cantidad = newCount ;

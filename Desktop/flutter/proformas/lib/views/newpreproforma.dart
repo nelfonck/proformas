@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:intl/intl.dart';
 import 'package:proformas/models/preproforma.dart';
 import 'package:proformas/services/notificationservice.dart';
@@ -167,7 +166,6 @@ class _NewPreProformaState extends State<NewPreProforma> {
                 ),
                 Body( model: model,),
                 ToolsWidget(model: model, codigoFocus: model.focusNode, txtCodigoController: model.txtCodigoController, mounted: mounted),
-                (model.useBroadCast ?? false) && model.receiver != null ?  BroadCastStreamBuilder(model: model,) : const SizedBox(),
                 TotalesWidget(model: model),
               ],
             ),
@@ -176,56 +174,6 @@ class _NewPreProformaState extends State<NewPreProforma> {
           
         },), 
       ),
-    );
-  }
-}
-
-class BroadCastStreamBuilder extends StatefulWidget {
-  const BroadCastStreamBuilder({
-    super.key,
-    this.model
-  });
-  final PreProformaViewModel? model ;
-
-  @override
-  State<BroadCastStreamBuilder> createState() => _BroadCastStreamBuilderState();
-}
-
-class _BroadCastStreamBuilderState extends State<BroadCastStreamBuilder> {
-
-  @override
-  void initState() {
-    widget.model?.receiver?.start();
-    widget.model?.receiver?.messages.listen((data){
-
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.model?.receiver?.stop();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<BroadcastMessage>(
-      initialData: null,
-      stream: widget.model?.receiver?.messages,
-      builder: ((context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.active:
-            widget.model?.insertItemFromBroadCast(snapshot.data?.data?['data']);
-            widget.model?.setCantidad(1);
-            return const SizedBox();
-
-          case ConnectionState.none:
-          case ConnectionState.done:
-          case ConnectionState.waiting:
-          return const SizedBox();
-        }
-      })
     );
   }
 }
@@ -252,15 +200,15 @@ class TotalesWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:  [
-                 Text('PorcDesc. ${NumberFormat.decimalPattern().format(model?.preProforma?.porcDescuento)}%'),
-                 Text('Desc.₡${NumberFormat.decimalPattern().format(model?.preProforma?.descuento)}'),
+                 Text('PorcDesc. ${NumberFormat.decimalPattern().format(model?.preProforma?.porcDescuento ?? 0)}%'),
+                 Text('Desc.₡${NumberFormat.decimalPattern().format(model?.preProforma?.descuento ?? 0)}'),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:  [
-                 Text('SubTotal ₡${NumberFormat.decimalPattern().format(model?.preProforma?.subTotal)}'),
-                 Text('Total. ₡${NumberFormat.decimalPattern().format(model?.preProforma?.total)}'),
+                 Text('SubTotal ₡${NumberFormat.decimalPattern().format(model?.preProforma?.subTotal ?? 0)}'),
+                 Text('Total. ₡${NumberFormat.decimalPattern().format(model?.preProforma?.total ?? 0)}'),
               ],
             ),
           ],
@@ -407,7 +355,7 @@ class Body extends StatelessWidget {
                       send: false
                     )
                   ) ,
-                  trailing: Text( '₡ ${NumberFormat.decimalPattern().format( model?.preProformaDetalle[index].total )}' ),
+                  trailing: Text( '₡ ${NumberFormat.decimalPattern().format( model?.preProformaDetalle[index].total ?? 0)}' ),
                 ),
               ),
             ),

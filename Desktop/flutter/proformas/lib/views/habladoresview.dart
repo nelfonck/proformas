@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:proformas/models/articulobloquemodel.dart';
 import 'package:proformas/providers/userprovider.dart';
 import 'package:proformas/services/helperservice.dart';
@@ -140,7 +139,7 @@ class HabladoresView extends StatelessWidget {
 }
 
 class BarCodeW extends StatelessWidget {
-  const BarCodeW({Key? key, this.model}) : super(key: key);
+  const BarCodeW({super.key, this.model});
   final HabladoresViewModel? model;
 
   @override
@@ -243,74 +242,7 @@ class BarCodeW extends StatelessWidget {
           ],
         ),
       ),
-      model!.useBroadCast! && model?.receiver != null ?  BroadCastStreamBuilder(model: model,) : const SizedBox(),
     ],
     );
   }
 }
-
-class BroadCastStreamBuilder extends StatefulWidget {
-  const BroadCastStreamBuilder({
-    Key? key,
-    this.model
-  }) : super(key: key);
-  final HabladoresViewModel? model ;
-
-  @override
-  State<BroadCastStreamBuilder> createState() => _BroadCastStreamBuilderState();
-}
-
-class _BroadCastStreamBuilderState extends State<BroadCastStreamBuilder> {
-
-  @override
-  void initState() {
-    widget.model?.receiver?.start();
-    widget.model?.receiver?.messages.listen((data){
-
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.model?.receiver?.stop();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<BroadcastMessage>(
-      initialData: null,
-      stream: widget.model?.receiver?.messages,
-      builder: ((context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.active:
-            widget.model?.codigoController?.text = snapshot.data?.data?['data'];
-            Dlg.showLoading(context, 'Obteniendo datos del articulo');
-              widget.model?.getArticulo( widget.model?.codigoController?.text )
-              .onError((error, stackTrace) {
-                if (context.mounted){
-                  Dlg.showError(context, error.toString());
-                }
-              })
-              .then(( resp ) async {
-                if (context.mounted){
-                  Navigator.of(context).pop();
-                  if ( resp['statusCode'] == 201 ){
-                    Dlg.showWarning(context, '${resp['message']}');
-                  }
-                }
-              });
-              HelperService.selectText( widget.model?.codigoController );
-            return const SizedBox();
-
-          case ConnectionState.none:
-          case ConnectionState.done:
-          case ConnectionState.waiting:
-          return const SizedBox();
-        }
-      })
-    );
-  }
-}
-

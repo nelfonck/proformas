@@ -24,7 +24,7 @@ void main() async {
 }
 
 class AppState extends StatelessWidget {
-  const AppState({Key? key, }) : super(key: key);
+  const AppState({super.key, });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class AppState extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, }) : super(key: key);
+  const MyApp({super.key, });
 
   // This widget is the root of your application.
   @override
@@ -51,7 +51,26 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          useMaterial3: true,
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(fontSize: 20),
+          ),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue, // cambia a tu color de marca
+            brightness: Brightness.light,
+          ),
+
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white, // texto e íconos
+            elevation: 2,
+            centerTitle: true,
+          ),
+          tabBarTheme: const TabBarThemeData(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white70,
+            indicatorColor: Colors.white,
+          ),
         ),
         navigatorKey: ContextHolder.key,
         routes:{

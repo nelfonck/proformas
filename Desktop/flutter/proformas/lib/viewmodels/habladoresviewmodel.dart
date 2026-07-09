@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:proformas/models/articulo.dart';
 import 'package:proformas/models/articulobloquemodel.dart';
 import 'package:proformas/models/habladorhh.dart';
@@ -17,7 +16,6 @@ class HabladoresViewModel extends ChangeNotifier {
   TextEditingController? codigoController = TextEditingController();
   final ArticuloRepository _articuloRepository = ArticuloRepository(ArticuloService(), ConfigService());
   final HabladorHHRepository _habladorHHRepository = HabladorHHRepository(HabladorHHService(), ConfigService());
-  BroadcastReceiver? receiver ;
   bool? useBroadCast = false ;
   List<HabladorHh> habladores = [];
   BuildContext? _context;
@@ -32,9 +30,7 @@ class HabladoresViewModel extends ChangeNotifier {
         Navigator.of(context).pushReplacementNamed('config');
       } else {
         useBroadCast = _configService.getUseBroadcast();
-        if (useBroadCast ?? false){
-          setReceiver();
-        }
+
         if (articulosBloque != null && articulosBloque.isNotEmpty) {
           final respInsertBloqToDb = await insertHabladorHHBloqToDb(articulosBloque);
           if (respInsertBloqToDb['statusCode']==200){
@@ -63,14 +59,6 @@ class HabladoresViewModel extends ChangeNotifier {
     return respHabladorHH;
   }
 
-  void setReceiver(){
-    String? receiverLink = _configService.getBroadCastReceiverLink();
-    receiver = BroadcastReceiver(
-      names: <String>[
-        receiverLink?? '',
-      ],
-    );
-  }
 
   Future<dynamic> deleteHablador(int index) async{
     int id = habladores[index].id!;

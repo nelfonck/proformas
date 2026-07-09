@@ -11,7 +11,7 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class ArticuloPageView extends StatefulWidget {
-  const ArticuloPageView({Key? key, }) : super(key: key);
+  const ArticuloPageView({super.key, });
 
   @override
   State<ArticuloPageView> createState() => _ArticuloPageViewState();

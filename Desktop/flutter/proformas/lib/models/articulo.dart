@@ -462,7 +462,7 @@ class Articulo {
         modificadoPor: json["modificado_por"],
         fechaModificacion: json["fecha_modificacion"] == null ? null : DateTime.parse(json["fecha_modificacion"]),
         porcentajeUtilidad: json["porcentaje_utilidad"] == null ? 0 : json["porcentaje_utilidad"].toDouble(),
-        porcDescuentoActual: json["porc_descuento_actual"],
+        porcDescuentoActual: json["porc_descuento_actual"] == null ? 0 : json["porc_descuento_actual"].toDouble(),
         codImpuesto: json["cod_impuesto"],
         habilitarCambiarPrecio: json["habilitar_cambiar_precio"],
         cantidadMinDesc: json["cantidad_min_desc"],

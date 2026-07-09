@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HistoryView extends StatefulWidget {
-  const HistoryView({Key? key, this.compania}) : super(key: key);
+  const HistoryView({super.key, this.compania});
 
   final Compania? compania;
 
@@ -272,7 +272,7 @@ class ListItem extends StatelessWidget {
                             onPressed: () async {
                               await model.shareFile(model.preproformas[index], index);
                             },
-                            icon: const Icon(FontAwesomeIcons.squareWhatsapp, color: Colors.green,)
+                            icon: const FaIcon(FontAwesomeIcons.squareWhatsapp, color: Colors.green,)
                           ),
                         ),
                       ],
