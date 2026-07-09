@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:proformas/services/helperservice.dart';
 import 'package:proformas/viewmodels/articuloviewmodel.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:proformas/views/scannerpage.dart';
 
 class BarcodeWidget extends StatelessWidget {

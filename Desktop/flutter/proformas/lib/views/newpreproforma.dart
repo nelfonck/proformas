@@ -10,7 +10,6 @@ import 'package:proformas/views/scannerpage.dart';
 import 'package:proformas/widgets/modelready.dart';
 import 'package:proformas/widgets/myspinbox.dart';
 import 'package:provider/provider.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 
 
 class NewPreProforma extends StatefulWidget {

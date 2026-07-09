@@ -9,7 +9,6 @@ import 'package:proformas/views/scannerpage.dart';
 import 'package:proformas/widgets/menudrawer.dart';
 import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:intl/intl.dart';
 
 class HabladoresView extends StatelessWidget {
