@@ -44,6 +44,12 @@ class _NewPreProformaState extends State<NewPreProforma> {
           appBar:  AppBar(
             title:  Text( model.preProforma != null ? 'Pre-proforma #${model.preProforma!.id}' : ''),
             elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context, widget.preProforma);
+              },
+            ),
             actions: [
               IconButton(
                 onPressed: () async {
@@ -52,7 +58,7 @@ class _NewPreProformaState extends State<NewPreProforma> {
                     Dlg.showWarningSnackbar(context, 'Esta pre-proforma ya fue enviada a Qupos');
                     return;
                   }
-
+        
                   final cliente = await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: ( context ) => const ClienteView()                    )
@@ -119,14 +125,14 @@ class _NewPreProformaState extends State<NewPreProforma> {
                           constraints: const BoxConstraints(),
                           color: Colors.red ,
                           onPressed: () async {
-
+        
                             if (model.enviadaQupos() ?? false){
                               Dlg.showWarningSnackbar(context, 'Esta pre-proforma ya fue enviada a Qupos');
                               return;
                             }
-
+        
                             bool setCurrentPricesToList = false ;
-
+        
                             if ( model.preProforma?.exento != null ){
                               if ( model.preProforma?.exento == '1' ){
                                 setCurrentPricesToList = true ;
@@ -156,7 +162,7 @@ class _NewPreProformaState extends State<NewPreProforma> {
                               });
                               
                             }
-
+        
                           },
                           icon: const Icon(Icons.remove_circle_outline, )
                         )

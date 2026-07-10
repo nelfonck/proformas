@@ -222,184 +222,223 @@ class HistoryViewModel extends ChangeNotifier {
 
   Future<Document> createPDF(PreProforma preProforma, List<PreProformaDetalle> preProformaDetalle, int index) async{
     final pdf = pw.Document();
-
-    pdf.addPage(pw.Page(
+    pdf.addPage(pw.MultiPage(
     pageFormat: PdfPageFormat.a4,
-    build: (pw.Context context) {
-      return pw.Center(
-        child: pw.Column(
-          mainAxisAlignment: pw.MainAxisAlignment.start,
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            //Logo
-            if (compania?.logo != null)
-            pw.Image(pw.MemoryImage(compania!.logo!)),
-            //title
-            pw.Text(
-              compania?.razonSocial ?? '',
-              style: pw.TextStyle(fontWeight: FontWeight.bold),
+    build: (pw.Context context) => [
+      //Logo
+      if (compania?.logo != null)
+      pw.Image(pw.MemoryImage(compania!.logo!)),
+      //title
+      pw.Text(
+        compania?.razonSocial ?? '',
+        style: pw.TextStyle(fontWeight: FontWeight.bold),
+      ),
+      pw.Text('Cedula: ${compania?.identificacion}'),
+      pw.Text('Telefono: ${compania?.telefono}'),
+      pw.Text('Dirección: ${compania?.direccion}'),
+      pw.SizedBox(height: 10),
+      pw.Table(
+        border: pw.TableBorder.all(color: PdfColors.grey),
+        defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
+        columnWidths: {
+          0: const pw.FixedColumnWidth(50),   // Cantidad
+          1: const pw.FixedColumnWidth(80),   // Código
+          2: const pw.FlexColumnWidth(5),     // Descripción
+          3: const pw.FixedColumnWidth(70),   // Precio
+          4: const pw.FixedColumnWidth(70),
+        },
+        children: [
+            pw.TableRow(
+            decoration:  const pw.BoxDecoration(
+              color: PdfColors.blue100,
             ),
-            pw.Text('Cedula: ${compania?.identificacion}'),
-            pw.Text('Telefono: ${compania?.telefono}'),
-            pw.Text('Dirección: ${compania?.direccion}'),
-            pw.SizedBox(height: 10),
-            pw.Table(
-              border: pw.TableBorder.all(color: PdfColors.grey),
-              defaultVerticalAlignment: pw.TableCellVerticalAlignment.middle,
+            children: [
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text('Cant.')
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text('Código')
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text('Descripción')
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child:  pw.Text('Precio')
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text('Total')
+              ),
+            ]
+          ),
+          ...List.generate(preProformaDetalle.length, (i) {
+            return pw.TableRow(
               children: [
-                 pw.TableRow(
-                  decoration:  const pw.BoxDecoration(
-                    color: PdfColors.blue100,
-                  ),
-                  children: [
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text('Código')
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text('Descripción')
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text('Precio')
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text('Total')
-                    ),
-                  ]
+                pw.Padding(
+                  padding:  const pw.EdgeInsets.all(8),
+                  child: pw.Text(preProformaDetalle[i].cantidad.toString())
                 ),
-                ...List.generate(preProformaDetalle.length, (index) {
-                  return pw.TableRow(
-                    children: [
-                      pw.Padding(
-                        padding:  const pw.EdgeInsets.all(8),
-                        child: pw.Text(preProformaDetalle[index].cantidad.toString())
-                      ),
-                      pw.Padding(
-                        padding:  const pw.EdgeInsets.all(8),
-                        child: pw.Text(preProformaDetalle[index].descripcion ?? '')
-                      ),
-                      pw.Padding(
-                        padding:  const pw.EdgeInsets.all(8),
-                        child: pw.Text( NumberFormat.decimalPattern().format(preProformaDetalle[index].costo) )
-                      ),
-                      pw.Padding(
-                        padding:  const pw.EdgeInsets.all(8),
-                        child: pw.Text( NumberFormat.decimalPattern().format(preProformaDetalle[index].total) )
-                      )
-                    ]
-                  );
-                }),
-                pw.TableRow(
-                  children: [
-                    pw.SizedBox(),
-                    pw.SizedBox(),
-                    pw.Container(
-                      alignment: pw.Alignment.centerRight,
-                      child: pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('Sub Total ')
-                      )
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].subTotal))
-                    )
-                  ]
+                pw.Padding(
+                  padding:  const pw.EdgeInsets.all(8),
+                  child: pw.Text(preProformaDetalle[i].codigo.toString())
                 ),
-                pw.TableRow(
-                  children: [
-                    pw.SizedBox(),
-                    pw.SizedBox(),
-                    pw.Container(
-                      alignment: pw.Alignment.centerRight,
-                      child: pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('Excento ')
-                      )
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].subTotalExento))
-                    )
-                  ]
+                pw.Padding(
+                  padding:  const pw.EdgeInsets.all(8),
+                  child: pw.Text(preProformaDetalle[i].descripcion ?? '')
                 ),
-                pw.TableRow(
-                  children: [
-                    pw.SizedBox(),
-                    pw.SizedBox(),
-                    pw.Container(
-                      alignment: pw.Alignment.centerRight,
-                      child: pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('Gravado ')
-                      )
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].subTotalGravado))
-                    )
-                  ]
+                pw.Padding(
+                  padding:  const pw.EdgeInsets.all(8),
+                  child: pw.Align(
+                    alignment: pw.Alignment.centerRight,
+                    child: pw.Text( NumberFormat.decimalPattern().format(preProformaDetalle[i].venta) 
+                  ))
                 ),
-                pw.TableRow(
-                  children: [
-                    pw.SizedBox(),
-                    pw.SizedBox(),
-                    pw.Container(
-                      alignment: pw.Alignment.centerRight,
-                      child: pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('Monto Iv ')
-                      )
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].montoIvColones))
-                    )
-                  ]
-                ),
-                pw.TableRow(
-                  children: [
-                    pw.SizedBox(),
-                    pw.SizedBox(),
-                    pw.Container(
-                      alignment: pw.Alignment.centerRight,
-                      child: pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('Descuento ')
-                      )
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text('${NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].porcDescuento)}%')
-                    )
-                  ]
-                ),
-                pw.TableRow(
-                  children: [
-                    pw.SizedBox(),
-                    pw.SizedBox(),
-                    pw.Container(
-                      alignment: pw.Alignment.centerRight,
-                      child: pw.Padding(
-                        padding: const pw.EdgeInsets.all(8),
-                        child: pw.Text('Total ')
-                      )
-                    ),
-                    pw.Padding(
-                      padding:  const pw.EdgeInsets.all(8),
-                      child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].total))
-                    )
-                  ]
-                ),
+                pw.Padding(
+                  padding:  const pw.EdgeInsets.all(8),
+                  child: pw.Align(
+                    alignment: pw.Alignment.centerRight,
+                    child: pw.Text( NumberFormat.decimalPattern().format(preProformaDetalle[i].total)
+                  ))
+                )
               ]
-            )
-          ]
-        ),
-      ); // Center
-    })); 
+            );
+          }),
+          pw.TableRow(
+            decoration: const pw.BoxDecoration(
+              color: PdfColors.grey200,
+            ),
+            children: [
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.Container(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text('Sub Total ')
+                )
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].subTotal))
+              )
+            ]
+          ),
+          pw.TableRow(
+            decoration: const pw.BoxDecoration(
+              color: PdfColors.grey200,
+            ),
+            children: [
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.Container(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text('Excento ')
+                )
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].subTotalExento))
+              )
+            ]
+          ),
+          pw.TableRow(
+            decoration: const pw.BoxDecoration(
+              color: PdfColors.grey200,
+            ),
+            children: [
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.Container(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text('Gravado ')
+                )
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].subTotalGravado))
+              )
+            ]
+          ),
+          pw.TableRow(
+            decoration: const pw.BoxDecoration(
+              color: PdfColors.grey200,
+            ),
+            children: [
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.Container(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text('Monto Iv ')
+                )
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text(NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].montoIvColones))
+              )
+            ]
+          ),
+          pw.TableRow(
+            decoration: const pw.BoxDecoration(
+              color: PdfColors.grey200,
+            ),
+            children: [
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.Container(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text('Descuento ')
+                )
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text('${NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].porcDescuento)}%')
+              )
+            ]
+          ),
+          pw.TableRow(
+            decoration:  const pw.BoxDecoration(
+              color: PdfColors.blue100,
+            ),
+            children: [
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.SizedBox(),
+              pw.Container(
+                alignment: pw.Alignment.centerRight,
+                child: pw.Padding(
+                  padding: const pw.EdgeInsets.all(8),
+                  child: pw.Text('Total ')
+                )
+              ),
+              pw.Padding(
+                padding:  const pw.EdgeInsets.all(8),
+                child: pw.Text(
+                  NumberFormat.decimalPatternDigits(decimalDigits: 0).format(preproformas[index].total),
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold,)
+                )
+              )
+            ]
+          ),
+        ]
+      )
+    ])); 
     return pdf;
   }
 
