@@ -141,11 +141,11 @@ class _HistoryViewState extends State<HistoryView> {
 
 class Body extends StatelessWidget {
   const Body({
-    Key? key,
+    super.key,
     required this.model,
     required this.usuario,
     required this.bodega
-  }) : super(key: key);
+  });
 
   final HistoryViewModel model ;
   final Usuario usuario;
@@ -196,12 +196,12 @@ class Body extends StatelessWidget {
 
 class ListItem extends StatelessWidget {
   const ListItem({
-    Key? key,
+    super.key,
     required this.model,
     required this.usuario,
     required this.bodega,
     required  this.index
-  }) : super(key: key);
+  });
 
   final HistoryViewModel model;
   final Usuario usuario;
@@ -304,7 +304,6 @@ class ListItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:  [
-                Text('Monto IV ₡${NumberFormat.decimalPattern().format(model.preproformas[index].montoIvColones)}', style: const TextStyle(color: Colors.blueGrey)),
                 Text('Exento ₡${NumberFormat.decimalPattern().format(model.preproformas[index].subTotalExento)}', style: const TextStyle(color: Colors.blueGrey)),
                 Text('Gravado ₡${NumberFormat.decimalPattern().format(model.preproformas[index].subTotalGravado)}', style:  const TextStyle(color: Colors.blueGrey)),
               ],
@@ -312,8 +311,14 @@ class ListItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:  [
-                Text('Sub Total ₡${NumberFormat.decimalPattern().format(model.preproformas[index].subTotal)}', style: const TextStyle(color: Colors.blueGrey)),
+                Text('Monto IV ₡${NumberFormat.decimalPattern().format(model.preproformas[index].montoIvColones)}', style: const TextStyle(color: Colors.blueGrey)),
                 Text('Desc. ${NumberFormat.decimalPattern().format(model.preproformas[index].porcDescuento)}%', style: const TextStyle(color: Colors.blueGrey)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:  [
+                Text('Sub Total ₡${NumberFormat.decimalPattern().format(model.preproformas[index].subTotal)}', style: const TextStyle(color: Colors.blueGrey)),
                 Text('Total ₡${NumberFormat.decimalPattern().format(model.preproformas[index].total)}', style:  TextStyle(color: Colors.cyan[900])),
               ],
             ),
