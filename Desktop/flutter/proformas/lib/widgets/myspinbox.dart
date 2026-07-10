@@ -5,7 +5,7 @@ import 'package:proformas/viewmodels/preproformaviewmodel.dart';
 
 class MySpinBox extends StatelessWidget {
   const  MySpinBox({
-    Key? key, 
+    super.key, 
     required this.model,
     required this.widht, 
     required this.height, 
@@ -13,7 +13,7 @@ class MySpinBox extends StatelessWidget {
     required this.index,
     this.focusNode,
     required this.send
-  }) : super(key: key);
+  });
 
   final PreProformaViewModel? model ;
   final double? widht;
@@ -165,9 +165,15 @@ class MySpinBox extends StatelessWidget {
           Visibility(
             visible: send ?? false,
             child: IconButton(onPressed: () async {
+
               if (model?.txtCodigoController == null ) return;
               if ( model!.txtCodigoController.text.isEmpty) return ;
               if ( txtController.text == '' ) return;
+
+              if (model?.enviadaQupos() ?? false){
+                Dlg.showWarningSnackbar(context, 'Esta pre-proforma ya fue enviada a Qupos');
+                return;
+              }
             
               if ( model?.isInList( model?.txtCodigoController.text ) ?? false){
             
