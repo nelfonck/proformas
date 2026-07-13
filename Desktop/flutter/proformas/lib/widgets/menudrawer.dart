@@ -14,8 +14,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
-    Key? key
-  }) : super(key: key);
+    super.key
+  });
 
 
   @override
@@ -81,7 +81,7 @@ class MenuDrawer extends StatelessWidget {
             onTap: () async{
               if (userProvider.getUsuario()?.superusuario == 'S'){
                 Navigator.pop(context);
-                Navigator.of(context).pushNamed('articulo'); 
+                Navigator.of(context).pushReplacementNamed('articulo'); 
               } else {
                 await userRepository.existeAccion(context, 'inv-mant-articulo').then((value) {
                   Map<String,dynamic> resp = value;
@@ -89,7 +89,7 @@ class MenuDrawer extends StatelessWidget {
                     if (resp['existe_accion']){
                       if (context.mounted){
                         Navigator.pop(context);
-                        Navigator.of(context).pushNamed('articulo');
+                        Navigator.of(context).pushReplacementNamed('articulo');
                       }
                     }else{
                       if (context.mounted){
@@ -106,7 +106,7 @@ class MenuDrawer extends StatelessWidget {
             title: const Text('Habladores'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed('habladores');
+              Navigator.of(context).pushReplacementNamed('habladores');
             },
           ),
           ListTile(
@@ -114,7 +114,7 @@ class MenuDrawer extends StatelessWidget {
             title: const Text('Insertar articulos en bloque'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed('articulosbloque');
+              Navigator.of(context).pushReplacementNamed('articulosbloque');
             },
           ),
           ListTile(

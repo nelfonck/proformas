@@ -9,7 +9,7 @@ class UsuarioReposotory {
 
   UsuarioReposotory(this._service, this._configService) ;
 
-  Future<Map<String, dynamic>> getUsurio( String user, String pass ) async {
+  Future<Map<String, dynamic>?> getUsurio( String user, String pass ) async {
     return _service.getUsuario( _configService.getBaseUrl() , user, pass );
   }
 

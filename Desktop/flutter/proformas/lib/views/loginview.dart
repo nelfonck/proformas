@@ -122,13 +122,14 @@ class LoginView extends StatelessWidget {
                             if (context.mounted){
                               Dlg.showError(context, error.toString());
                             }
+                            return null;
                           }).then((value){
-                              if ( value['statusCode'] == 201 ){
+                              if ( value?['statusCode'] == 201 ){
                                 if (context.mounted){
-                                  Dlg.showError(context, value['message']);
+                                  Dlg.showError(context, value?['message']);
                                 }
                 
-                              } else if ( value['statusCode'] == 200 ){
+                              } else if ( value?['statusCode'] == 200 ){
                 
                                 if ( bodega.getBodega() == null ) {
                                   if (context.mounted){
@@ -137,7 +138,7 @@ class LoginView extends StatelessWidget {
                                   return ;
                                 }
                 
-                                final Usuario usuario = Usuario.fromMap( value['usuario'] );
+                                final Usuario usuario = Usuario.fromMap( value?['usuario'] );
                                 user.setUsuario( usuario );
 
                                 compania.setCompania( model.compania );
@@ -145,12 +146,13 @@ class LoginView extends StatelessWidget {
                                 model.setLastUsedBodega(bodega.getBodega());
 
                                 model.setLastCompany( model.compania );
-                
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: ( (context) => HistoryView(compania: compania.getCompania(),))
-                                  )
-                                );
+                                if (context.mounted){
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: ( (context) => HistoryView(compania: compania.getCompania(),))
+                                    )
+                                  );
+                                }
                               }
                           });
                           },

@@ -33,7 +33,7 @@ class UsuarioService {
     }     
   }
 
-  Future<Map<String, dynamic>> getUsuario( String baseUrl, String user, String pass ) async {
+  Future<Map<String, dynamic>?> getUsuario( String baseUrl, String user, String pass ) async {
     final url = Uri.http(baseUrl, '/utilitiesapi/public/usuario',
         {'api_key': Globals.apikey});
 

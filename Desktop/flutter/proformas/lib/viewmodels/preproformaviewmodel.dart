@@ -240,6 +240,7 @@ class PreProformaViewModel extends ChangeNotifier {
         subTotalExento+= preProformaDetalle[x].venta! * preProformaDetalle[x].cantidad! ;
 
       }
+
     }
 
     preProforma?.subTotal = tempSubTotal ;

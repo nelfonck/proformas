@@ -125,8 +125,8 @@ class LoginViewModel extends ChangeNotifier{
   }
 
 
-  Future<dynamic> getUsuario( String user, String pass ) async {
-    final Map<String, dynamic> result = await _usuarioReposotory.getUsurio(user, pass);
+  Future<Map<String, dynamic>?> getUsuario( String user, String pass ) async {
+    final Map<String, dynamic>? result = await _usuarioReposotory.getUsurio(user, pass);
     return result ;
   }
 
