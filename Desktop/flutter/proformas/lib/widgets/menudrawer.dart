@@ -2,13 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:proformas/consts/globals.dart';
-import 'package:proformas/providers/companiaprovider.dart';
 import 'package:proformas/providers/userprovider.dart';
 import 'package:proformas/repositories/usuariorepository.dart';
 import 'package:proformas/services/configservice.dart';
 import 'package:proformas/services/notificationservice.dart';
 import 'package:proformas/services/usuarioservice.dart';
-import 'package:proformas/views/historyview.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +18,7 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CompaniaProvider compania =  Provider.of<CompaniaProvider>(context, listen: false);
+
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     UsuarioReposotory userRepository = UsuarioReposotory(UsuarioService(), ConfigService());
 
@@ -68,11 +66,11 @@ class MenuDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context); // Cerrar el drawer
 
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: ( (context) => HistoryView(compania: compania.getCompania(),))             
-                )
-              );
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'history',
+                (route) => false,
+                );
             },
           ),
           ListTile(
@@ -81,7 +79,11 @@ class MenuDrawer extends StatelessWidget {
             onTap: () async{
               if (userProvider.getUsuario()?.superusuario == 'S'){
                 Navigator.pop(context);
-                Navigator.of(context).pushReplacementNamed('articulo'); 
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  'articulo',
+                  (route) => false,
+                  ); 
               } else {
                 await userRepository.existeAccion(context, 'inv-mant-articulo').then((value) {
                   Map<String,dynamic> resp = value;
@@ -89,7 +91,11 @@ class MenuDrawer extends StatelessWidget {
                     if (resp['existe_accion']){
                       if (context.mounted){
                         Navigator.pop(context);
-                        Navigator.of(context).pushReplacementNamed('articulo');
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          'articulo',
+                          (route) => false,
+                          );
                       }
                     }else{
                       if (context.mounted){
@@ -106,7 +112,11 @@ class MenuDrawer extends StatelessWidget {
             title: const Text('Habladores'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed('habladores');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'habladores',
+                (route) => false,
+                );
             },
           ),
           ListTile(
@@ -114,7 +124,11 @@ class MenuDrawer extends StatelessWidget {
             title: const Text('Insertar articulos en bloque'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed('articulosbloque');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'articulosbloque',
+                (route) => false,
+                );
             },
           ),
           ListTile(

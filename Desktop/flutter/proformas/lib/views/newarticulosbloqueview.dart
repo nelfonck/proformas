@@ -4,11 +4,12 @@ import 'package:proformas/data/exceptions/api_exception.dart';
 import 'package:proformas/services/notificationservice.dart';
 import 'package:proformas/viewmodels/articulosbloqueviewmodel.dart';
 import 'package:proformas/views/habladoresview.dart';
+import 'package:proformas/widgets/menudrawer.dart';
 import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class NewArticulosBloqueView extends StatefulWidget {
-  const NewArticulosBloqueView({Key? key, }) : super(key: key);
+  const NewArticulosBloqueView({super.key, });
 
   @override
   State<NewArticulosBloqueView> createState() => _NewArticulosBloqueViewState();
@@ -18,7 +19,8 @@ class _NewArticulosBloqueViewState extends State<NewArticulosBloqueView> {
   @override
   Widget build(BuildContext context) {
     NumberFormat format = NumberFormat.decimalPattern('es');
-    
+    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return ChangeNotifierProvider(
       create: (_) => ArticulosBloqueViewModel(),
       child: ModelReady(
@@ -27,9 +29,16 @@ class _NewArticulosBloqueViewState extends State<NewArticulosBloqueView> {
         },
         child: Consumer<ArticulosBloqueViewModel>(builder: (context, model, child) {
         return Scaffold(
+          key: scaffoldKey,
           appBar: AppBar(
             title: const Text('Ingresar en bloque') ,
             elevation: 0,
+            leading: IconButton(
+              onPressed: (){
+                scaffoldKey.currentState?.openDrawer();
+              },
+              icon: const Icon(Icons.menu)
+            ),
             actions: [
               Visibility(
                 visible: model.list.isNotEmpty,
@@ -141,7 +150,7 @@ class _NewArticulosBloqueViewState extends State<NewArticulosBloqueView> {
                                 child: Text(model.list[index].codigo ?? '', style: const TextStyle(color: Colors.white,),)
                               ),
                               const SizedBox(width: 10,),
-                              Text(model.list[index].descripcion ?? '' , style:  const TextStyle(color: Colors.white,),),
+                              Expanded(child: Text(model.list[index].descripcion ?? '' , style:  const TextStyle(color: Colors.white,),)),
                               Expanded(child: Container(),),
                               const SizedBox(width: 10,),
                               Text('₡ ${format.format(model.list[index].articuloMla?.venta ?? 0)}' , style: const TextStyle(color: Colors.white,),),
@@ -175,9 +184,8 @@ class _NewArticulosBloqueViewState extends State<NewArticulosBloqueView> {
               ),
             ],
           ),
-          
-        );
-          
+          drawer: const MenuDrawer(),
+        ); 
         },), 
       ),
     );

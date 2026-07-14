@@ -9,7 +9,7 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class NewArticuloPageView extends StatefulWidget {
-  const NewArticuloPageView({Key? key,this.codigo }) : super(key: key);
+  const NewArticuloPageView({super.key,this.codigo });
 
   final String? codigo ;
   

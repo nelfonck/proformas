@@ -9,7 +9,7 @@ import 'package:proformas/views/cabysview.dart';
 
 
 class DetalleArticuloPage extends StatelessWidget {
-  const DetalleArticuloPage({Key? key,this.model }) : super(key: key);
+  const DetalleArticuloPage({super.key,this.model });
   final ArticuloViewModel? model ;
 
   @override

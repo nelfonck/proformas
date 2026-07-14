@@ -5,7 +5,7 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class ConfigView extends StatelessWidget {
-  const ConfigView({Key? key, }) : super(key: key);
+  const ConfigView({super.key, });
 
   @override
   Widget build(BuildContext context) {

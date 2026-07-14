@@ -7,7 +7,7 @@ import 'package:proformas/services/helperservice.dart';
 import 'package:proformas/viewmodels/articuloviewmodel.dart';
 
 class UnidadMedidaArticuloPage extends StatefulWidget { 
-  const UnidadMedidaArticuloPage({Key? key, this.model }) : super(key: key);
+  const UnidadMedidaArticuloPage({super.key, this.model });
 
   final ArticuloViewModel? model ;
 

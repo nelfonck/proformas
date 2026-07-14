@@ -4,7 +4,7 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class ActualizarAppView extends StatefulWidget {
-  const ActualizarAppView({Key? key, this.appUrl, this.versionName}) : super(key: key);
+  const ActualizarAppView({super.key, this.appUrl, this.versionName});
   final String? appUrl ;
   final String? versionName ;
 

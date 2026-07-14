@@ -5,7 +5,7 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class ClienteView extends StatelessWidget {
-  const ClienteView({Key? key, }) : super(key: key);
+  const ClienteView({super.key, });
 
   @override
   Widget build(BuildContext context) {

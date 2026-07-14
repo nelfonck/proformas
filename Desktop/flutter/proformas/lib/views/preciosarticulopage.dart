@@ -6,7 +6,7 @@ import 'package:proformas/services/helperservice.dart';
 import 'package:proformas/viewmodels/articuloviewmodel.dart';
 
 class PreciosArticuloPage extends StatefulWidget {
-  const PreciosArticuloPage({Key? key,this.model }) : super(key: key);
+  const PreciosArticuloPage({super.key,this.model });
   final ArticuloViewModel? model ;
 
   @override

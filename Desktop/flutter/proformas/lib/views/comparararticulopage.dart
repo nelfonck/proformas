@@ -4,7 +4,7 @@ import 'package:proformas/viewmodels/articuloviewmodel.dart';
 
 class CompararArticuloPage extends StatefulWidget {
 
-  const CompararArticuloPage({Key? key,this.model }) : super(key: key);
+  const CompararArticuloPage({super.key,this.model });
   final ArticuloViewModel? model ;
 
   @override

@@ -5,7 +5,7 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class FiltroArticuloView extends StatelessWidget {
-  const FiltroArticuloView({Key? key, this.model }) : super(key: key);
+  const FiltroArticuloView({super.key, this.model });
   final ArticuloViewModel? model ;
 
   @override

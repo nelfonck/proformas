@@ -6,7 +6,7 @@ import 'package:proformas/services/helperservice.dart';
 import 'package:proformas/viewmodels/newarticuloviewmodel.dart';
 
 class NewPreciosArticuloPage extends StatelessWidget {
-  const NewPreciosArticuloPage({Key? key, this.model }) : super(key: key);
+  const NewPreciosArticuloPage({super.key, this.model });
 
   final NewArticuloViewModel? model ;
 
