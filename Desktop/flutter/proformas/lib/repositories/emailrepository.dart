@@ -11,7 +11,7 @@ class EmailRepository {
 
   EmailRepository(this._service, this._configService) ;
 
-  Future<Map<String, dynamic>> sendEmail( PreProforma preProforma, List<PreProformaDetalle> preProformaDetalle, Compania compania) async {
+  Future<Map<String, dynamic>?> sendEmail( PreProforma preProforma, List<PreProformaDetalle> preProformaDetalle, Compania compania) async {
     return await _service.sendEmail( _configService.getBaseUrl(), preProforma, preProformaDetalle, compania);
   }
 

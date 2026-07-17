@@ -48,6 +48,7 @@ class HistoryViewModel extends ChangeNotifier {
   BuildContext? context ;
   bool? isLoading = false ;
   bool? mounted ;
+  bool? sendingEmail = false;
 
   void init(BuildContext context, Compania? compania, bool? mounted) async {
     this.context = context ;
@@ -115,16 +116,23 @@ class HistoryViewModel extends ChangeNotifier {
 
   }
 
-  Future<dynamic> sendEmail( int index ) async {
-
+  Future<Map<String,dynamic>?> sendEmail( int index ) async {
+   
     PreProforma preProforma = preproformas[index];
     PreProforma preProformaCloned = PreProforma.clone(preProforma);
     preProformaCloned = getPreProformaSubTotalSinDescuento(preProformaCloned);
 
     final List<PreProformaDetalle> preproformadetalle = await _repository.getPreproformaDetalleById( preProforma.id! );
-    final Map<String, dynamic> result = await _emailRepository.sendEmail( preProformaCloned, preproformadetalle, compania! );
+    final Map<String, dynamic>? result = await _emailRepository.sendEmail( preProformaCloned, preproformadetalle, compania! );
 
     return result ;
+  }
+
+  void setSendingEmail(bool? value){
+    sendingEmail = value;
+    if (context?.mounted ??false ){
+      notifyListeners();
+    }
   }
 
   void setPreProforma( int index, PreProforma preProforma ) {

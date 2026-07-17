@@ -13,7 +13,7 @@ class EmailService {
 
   factory EmailService() => _instance ;
 
-  Future<Map<String, dynamic>> sendEmail( String baseUrl, PreProforma preProforma, List<PreProformaDetalle> preProformaDetalle, Compania compania) async {
+  Future<Map<String, dynamic>?> sendEmail( String baseUrl, PreProforma preProforma, List<PreProformaDetalle> preProformaDetalle, Compania compania) async {
 
     final url = Uri.http(baseUrl, '/utilitiesapi/public/sendemail',
         {'api_key': Globals.apikey});
@@ -30,7 +30,7 @@ class EmailService {
 
     if (resp.statusCode == 200) {
 
-      final Map<String, dynamic>  decoded = jsonDecode(resp.body) ;
+      final Map<String, dynamic>?  decoded = jsonDecode(resp.body) ;
 
       return decoded;
 

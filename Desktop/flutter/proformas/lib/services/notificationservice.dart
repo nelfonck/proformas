@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:context_holder/context_holder.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class Dlg {
   
@@ -172,6 +173,28 @@ class Dlg {
               Text( message ),
               const SizedBox(height: 20,),
               const CircularProgressIndicator(),
+            ],
+          ),
+        );
+      }
+    );
+  }
+  static Future<Widget?> showDogWaiting( BuildContext context, String message){
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // <- No se puede cerrar tocando fuera
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children:  [
+              Lottie.asset(
+                'assets/animations/dog_waiting.json',
+                width: 200,
+                height: 200,
+              ),
+              const SizedBox(height: 20,),
+              Text( message ,style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 16),),
             ],
           ),
         );

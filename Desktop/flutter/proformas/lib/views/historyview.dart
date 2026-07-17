@@ -248,16 +248,22 @@ class ListItem extends StatelessWidget {
                           visible: model.preproformas[index].codCliente != null,
                           child: IconButton(
                             onPressed: () async {
-                  
+                              if (model.sendingEmail ??false) return;
+                              model.setSendingEmail(true);
+                              Dlg.showDogWaiting(context, 'Enviando email por favor espere..');
                               await model.sendEmail( index ).onError((error, stackTrace) {
                                 if (context.mounted){
-                                 Dlg.showError(context, error.toString());
+                                  model.setSendingEmail(false);
+                                  Navigator.of(context).pop();
+                                  Dlg.showError(context, error.toString());
                                 }
+                                return null;
                               }).then((result) {
-                  
-                                  if ( result['statusCode'] == 200 ){
+                                  if ( result?['statusCode'] == 200 ){
                                     if (context.mounted){
-                                      Dlg.showSnackbar(context, result['message']);
+                                      model.setSendingEmail(false);
+                                      Navigator.of(context).pop();
+                                      Dlg.showSnackbar(context, result?['message']);
                                     }
                                   }
                               });
