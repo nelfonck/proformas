@@ -97,19 +97,22 @@ class HistoryViewModel extends ChangeNotifier {
 
   Future<void> addProforma( int index, Usuario usuario, Bodega bodega ) async {
     PreProforma preProforma = preproformas[index];
-    PreProforma preProformaCloned = PreProforma.clone(preProforma);
+    PreProforma? preProformaCloned = PreProforma.clone(preProforma);
     preProformaCloned = getPreProformaTotalSinDescuento(preProformaCloned);
 
     final List<PreProformaDetalle> preproformadetalle = await _repository.getPreproformaDetalleById( preProforma.id! );
     //final List<PreProformaDetalle> preproformadetalleSinDescuento = getPreProformaDetalleSinDescuento(  preproformadetalle );
+    if (preProformaCloned!=null){
+      final Map<String, dynamic> result = await _proformaRepository.addProforma( preProformaCloned, preproformadetalle, usuario, bodega );
 
-    final Map<String, dynamic> result = await _proformaRepository.addProforma( preProformaCloned, preproformadetalle, usuario, bodega );
+      if ( result['statusCode'] == 200 ) {
 
-    if ( result['statusCode'] == 200 ) {
+        preproformas[index].refproforma = result['cod_factura'].toDouble();
+        preproformas[index].enviada = true;
 
-      preproformas[index].refproforma = result['cod_factura'].toDouble();
-      preproformas[index].enviada = true;
-
+      }
+    }else{
+      throw Exception('Preproforma es null');
     }
 
     notifyListeners();
@@ -119,13 +122,15 @@ class HistoryViewModel extends ChangeNotifier {
   Future<Map<String,dynamic>?> sendEmail( int index ) async {
    
     PreProforma preProforma = preproformas[index];
-    PreProforma preProformaCloned = PreProforma.clone(preProforma);
+    PreProforma? preProformaCloned = PreProforma.clone(preProforma);
     preProformaCloned = getPreProformaSubTotalSinDescuento(preProformaCloned);
 
-    final List<PreProformaDetalle> preproformadetalle = await _repository.getPreproformaDetalleById( preProforma.id! );
-    final Map<String, dynamic>? result = await _emailRepository.sendEmail( preProformaCloned, preproformadetalle, compania! );
-
-    return result ;
+    final List<PreProformaDetalle> preproformadetalle = await _repository.getPreproformaDetalleById( preProforma.id );
+    if (preProformaCloned!=null && compania!=null){
+      final Map<String, dynamic>? result = await _emailRepository.sendEmail( preProformaCloned, preproformadetalle, compania! );
+      return result ;
+    }
+    return throw Exception('Preproforma o compania es null');
   }
 
   void setSendingEmail(bool? value){
@@ -201,21 +206,24 @@ class HistoryViewModel extends ChangeNotifier {
     
   }
 
-  PreProforma getPreProformaTotalSinDescuento( PreProforma preProforma ){
-    final double porcDescuentoAplicado = despejarPorcDesc( preProforma.total! , preProforma.subTotal!);
-    
-    preProforma.total = (( preProforma.total! * 100 ) / ( 100 - porcDescuentoAplicado ));
+  PreProforma? getPreProformaTotalSinDescuento( PreProforma? preProforma ){
+    final double? porcDescuentoAplicado = despejarPorcDesc( preProforma?.total , preProforma?.subTotal);
+    if (porcDescuentoAplicado!=null){
+      preProforma?.total = (( preProforma.total! * 100 ) / ( 100 - porcDescuentoAplicado ));
+    }
     return preProforma;
   }
 
-  PreProforma getPreProformaSubTotalSinDescuento( PreProforma preProforma ){
-    final double porcDescuentoAplicado = despejarPorcDesc( preProforma.total! , preProforma.subTotal!);
-    
-    preProforma.subTotal = (( preProforma.total! * 100 ) / ( 100 - porcDescuentoAplicado ));
+  PreProforma? getPreProformaSubTotalSinDescuento( PreProforma? preProforma ){
+    final double? porcDescuentoAplicado = despejarPorcDesc( preProforma?.total , preProforma?.subTotal);
+    if (porcDescuentoAplicado!=null && preProforma!=null){
+      preProforma.subTotal = (( preProforma.total! * 100 ) / ( 100 - porcDescuentoAplicado ));
+    }
     return preProforma;
   }
 
-  double despejarPorcDesc( double montoConDescuento, double montoSinDescuento ) {
+  double? despejarPorcDesc( double? montoConDescuento, double? montoSinDescuento ) {
+    if (montoConDescuento==null || montoSinDescuento==null) return null;
     if ( montoConDescuento > 0  && montoSinDescuento > 0 ){
       return 100 - (( montoConDescuento * 100 ) / montoSinDescuento) ;
     } else {

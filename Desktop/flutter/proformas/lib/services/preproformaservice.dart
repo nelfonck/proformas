@@ -83,7 +83,7 @@ class PreProformaService {
     }     
   }
 
-  Future<List<PreProformaDetalle>> getPreproformaDetalleById( String baseUrl, int id) async {
+  Future<List<PreProformaDetalle>> getPreproformaDetalleById( String baseUrl, int? id) async {
 
     final url = Uri.http(baseUrl, '/utilitiesapi/public/detallepreproformabyid',
         {'api_key': Globals.apikey, 'id' : id.toString()});

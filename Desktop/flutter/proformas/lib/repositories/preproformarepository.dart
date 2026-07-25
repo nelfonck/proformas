@@ -38,7 +38,7 @@ class PreProformaRepository {
     return await _service.deletePreProforma( _configService.getBaseUrl(), id );
   }
 
-  Future<List<PreProformaDetalle>> getPreproformaDetalleById( int id ) async {
+  Future<List<PreProformaDetalle>> getPreproformaDetalleById( int? id ) async {
     return await _service.getPreproformaDetalleById( _configService.getBaseUrl(), id);
   }
 
