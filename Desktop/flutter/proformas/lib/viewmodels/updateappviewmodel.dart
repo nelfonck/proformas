@@ -13,7 +13,7 @@ class UpdateAppViewModel extends ChangeNotifier {
   String appUrl = '';
   String fileName = '';
 
- init(String appUrl, String fileName) async {
+ Future init(String appUrl, String fileName) async {
     this.appUrl = appUrl ;
     this.fileName = fileName ;
     if ( await _askForPermissions() ){
@@ -25,74 +25,69 @@ class UpdateAppViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> _askForPermissions() async{
-    PermissionStatus installPackages = await Permission.requestInstallPackages.status;
-    PermissionStatus storage = await Permission.storage.status;
+  Future<bool> _askForPermissions() async {
+    var install = await Permission.requestInstallPackages.status;
 
-    if ( storage.isGranted && installPackages.isGranted ){
+    if (install.isGranted) {
       return true;
-    } else if ( storage.isDenied && installPackages.isDenied){
-      if ( await Permission.storage.request().isGranted ){
-        if ( await Permission.requestInstallPackages.request().isGranted ){
-          return true;
-        } else {
-          return false;
-        }
-      }
-    } else if ( storage.isGranted && installPackages.isDenied ){
-      if ( await Permission.requestInstallPackages.request().isGranted ){
-        return true;
-      } else {
-        return false;
-      }
-    } else if ( storage.isDenied && installPackages.isGranted ){
-      if ( await Permission.storage.request().isGranted ){
-        return true;
-      } else {
-        return false;
-      }
     }
-    return false;
+
+    install = await Permission.requestInstallPackages.request();
+
+    return install.isGranted;
   }
 
-  Future downloadFile(String url, {String? filename}) async {
-    var httpClient = http.Client();
-    var request =  http.Request('GET', Uri.parse(url));
-    var response = httpClient.send(request);
-    final dir = (await getExternalStorageDirectory())?.path;
+  Future<void> downloadFile(String url, {String? filename}) async {
+    final httpClient = http.Client();
 
-    List<List<int>> chunks =  [];
-    int downloaded = 0;
+    try {
+      final request = http.Request('GET', Uri.parse(url));
+      final response = await httpClient.send(request);
 
-    response.asStream().listen((http.StreamedResponse r) {
+      if (response.statusCode != 200) {
+        throw Exception(
+            "Error al descargar el archivo. Código: ${response.statusCode}");
+      }
 
-      r.stream.listen((List<int> chunk) {
+      final dir = await getExternalStorageDirectory();
+      if (dir == null) {
+        throw Exception("No se pudo obtener el directorio de almacenamiento.");
+      }
 
-        downloadingProgress = downloaded / r.contentLength! * 100;
-        notifyListeners();
+      final file = File('${dir.path}/$filename');
+      final sink = file.openWrite();
 
-        chunks.add(chunk);
+      int downloaded = 0;
+      final totalBytes = response.contentLength ?? 0;
+
+      await for (final chunk in response.stream) {
+        sink.add(chunk);
+
         downloaded += chunk.length;
-      }, onDone: () async {
-        
-        downloadingProgress = downloaded / r.contentLength! * 100;
-        notifyListeners();
-        // Save the file
-        File file =  File('$dir/$filename');
-        final Uint8List bytes = Uint8List(r.contentLength!);
-        int offset = 0;
-        for (List<int> chunk in chunks) {
-          bytes.setRange(offset, offset + chunk.length, chunk);
-          offset += chunk.length;
+
+        if (totalBytes > 0) {
+          downloadingProgress = (downloaded / totalBytes) * 100;
+          notifyListeners();
         }
-        await file.writeAsBytes(bytes); 
-        OpenResult result = await OpenFile.open('$dir/$filename');  
-        if ( result.type != ResultType.done ){
-          // ignore: use_build_context_synchronously
+      }
+
+      await sink.flush();
+      await sink.close();
+
+      downloadingProgress = 100;
+      notifyListeners();
+
+      OpenResult result = await OpenFile.open(file.path);
+
+      if (result.type != ResultType.done) {
+        if (ContextHolder.currentContext.mounted){
           Dlg.showError(ContextHolder.currentContext, result.message);
         }
-        return;       
-    });
-    });
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      httpClient.close();
+    }
   }
 }
