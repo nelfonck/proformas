@@ -3,7 +3,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:proformas/models/bodega.dart';
 import 'package:proformas/models/usuario.dart';
 import 'package:proformas/providers/bodegaprovider.dart';
-import 'package:proformas/providers/companiaprovider.dart';
 import 'package:proformas/providers/userprovider.dart';
 import 'package:proformas/services/notificationservice.dart';
 import 'package:proformas/viewmodels/loginviewmodel.dart';
@@ -12,7 +11,7 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,6 @@ class LoginView extends StatelessWidget {
     TextEditingController passController = TextEditingController();
     BodegaProvider bodega = Provider.of<BodegaProvider>(context, listen: false);
     UserProvider user =  Provider.of<UserProvider>(context, listen: false);
-    CompaniaProvider compania =  Provider.of<CompaniaProvider>(context, listen: false);
 
     return  ChangeNotifierProvider(
       create: (_) => LoginViewModel(),
@@ -118,12 +116,14 @@ class LoginView extends StatelessWidget {
                             Dlg.showWarningSnackbar(context, 'Espere porfavor');
                             return;
                           }
+                          
                           await model.getUsuario(userController.text, passController.text).onError((error, stackTrace) {
                             if (context.mounted){
                               Dlg.showError(context, error.toString());
                             }
                             return null;
                           }).then((value){
+
                               if ( value?['statusCode'] == 201 ){
                                 if (context.mounted){
                                   Dlg.showError(context, value?['message']);
@@ -141,17 +141,22 @@ class LoginView extends StatelessWidget {
                                 final Usuario usuario = Usuario.fromMap( value?['usuario'] );
                                 user.setUsuario( usuario );
 
-                                compania.setCompania( model.compania );
-
                                 model.setLastUsedBodega(bodega.getBodega());
 
-                                model.setLastCompany( model.compania );
-                                if (context.mounted){
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ( (context) => HistoryView(compania: compania.getCompania(),))
-                                    )
-                                  );
+                                if (model.compania!=null){
+                                  model.setLastCompany( model.compania! );
+                                  if (context.mounted){
+
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ( (context) => HistoryView(compania: model.compania!,))
+                                      )
+                                    );
+                                  }
+                                }else{
+                                  if (context.mounted){
+                                   Dlg.showError(context, 'No ha sido posible cargar la compania');
+                                  }
                                 }
                               }
                           });

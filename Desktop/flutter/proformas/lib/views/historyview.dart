@@ -16,9 +16,9 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HistoryView extends StatefulWidget {
-  const HistoryView({super.key, this.compania});
+  const HistoryView({super.key, required this.compania});
 
-  final Compania? compania;
+  final Compania compania;
 
   @override
   State<HistoryView> createState() => _HistoryViewState();

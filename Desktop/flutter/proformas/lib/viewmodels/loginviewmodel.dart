@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:proformas/models/bodega.dart';
 import 'package:proformas/models/compania.dart';
 import 'package:proformas/providers/bodegaprovider.dart';
-import 'package:proformas/providers/companiaprovider.dart';
 import 'package:proformas/repositories/bodegarepository.dart';
 import 'package:proformas/repositories/companiarepository.dart';
 import 'package:proformas/repositories/usuariorepository.dart';
@@ -63,9 +62,11 @@ class LoginViewModel extends ChangeNotifier{
               return;
             }
           });
+          if (compania!=null){
+            setLastCompany(compania!);
+          }
         } else {
           compania = lastCompany;
-          setCompania(lastCompany!);
         }
         loading = false;
         notifyListeners();
@@ -109,10 +110,6 @@ class LoginViewModel extends ChangeNotifier{
     bodegaProvider.setBodega(bodega);
    } 
 
-  void setCompania(Compania compania){
-    CompaniaProvider companiaProvider = Provider.of<CompaniaProvider>(context!, listen: false);
-    companiaProvider.setCompania(compania);
-   } 
 
   Future<void> getBodegas() async {
     bodegas = await _bodegaRepository.getBodegas();
@@ -137,15 +134,15 @@ class LoginViewModel extends ChangeNotifier{
     prefs.setString('activo', bodega?.activo ?? 'N');
   }
 
-  Future<void> setLastCompany(Compania? compania) async{
+  Future<void> setLastCompany(Compania compania) async{
     SharedPreferences prefs = await  SharedPreferences.getInstance();
-    prefs.setString('cod_compania', compania?.codCompania ?? '');
-    prefs.setString('razon_social', compania?.razonSocial ?? '');
-    prefs.setString('razon_comercial', compania?.razonComercial ?? '');
-    prefs.setString('identificacion', compania?.identificacion ?? '');
-    prefs.setString('tipo_identificacion', compania?.tipoIdentificacion ?? '');
-    prefs.setString('telefono', compania?.telefono ?? '');
-    prefs.setString('direccion', compania?.direccion ?? '');
-    prefs.setString('logo',  HelperService.uint8ListToBase64String(compania?.logo));
+    prefs.setString('cod_compania', compania.codCompania ?? '');
+    prefs.setString('razon_social', compania.razonSocial ?? '');
+    prefs.setString('razon_comercial', compania.razonComercial ?? '');
+    prefs.setString('identificacion', compania.identificacion ?? '');
+    prefs.setString('tipo_identificacion', compania.tipoIdentificacion ?? '');
+    prefs.setString('telefono', compania.telefono ?? '');
+    prefs.setString('direccion', compania.direccion ?? '');
+    prefs.setString('logo',  HelperService.uint8ListToBase64String(compania.logo));
   }
 }

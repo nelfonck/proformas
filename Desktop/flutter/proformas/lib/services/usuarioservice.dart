@@ -34,8 +34,11 @@ class UsuarioService {
   }
 
   Future<Map<String, dynamic>?> getUsuario( String baseUrl, String user, String pass ) async {
+
     final url = Uri.http(baseUrl, '/utilitiesapi/public/usuario',
-        {'api_key': Globals.apikey});
+        {
+          'api_key': Globals.apikey
+        });
 
     final Usuario usuario = Usuario(
       codUsuario: user,
@@ -56,7 +59,7 @@ class UsuarioService {
 
     } else {
       return Future.error(resp.body);
-    }     
+    } 
   }
 
   Future<Map<String, dynamic>> existeAccion(BuildContext context, String baseUrl, String codAccion ) async {
