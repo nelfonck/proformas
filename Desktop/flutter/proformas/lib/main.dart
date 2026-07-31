@@ -4,11 +4,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:proformas/providers/bodegaprovider.dart';
 import 'package:proformas/providers/configprovider.dart';
 import 'package:proformas/providers/userprovider.dart';
-import 'package:proformas/views/articulopageview.dart';
 import 'package:proformas/views/configview.dart';
-import 'package:proformas/views/habladoresview.dart';
 import 'package:proformas/views/loginview.dart';
-import 'package:proformas/views/newarticulosbloqueview.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -71,11 +68,8 @@ class MyApp extends StatelessWidget {
         ),
         navigatorKey: ContextHolder.key,
         routes:{
-          'articulo' : ( _ ) => const ArticuloPageView(),
           'login': ( _ ) =>  const LoginView(),
           'config': ( _ ) =>  const ConfigView(),
-          'habladores': ( _ ) =>  const HabladoresView(),
-          'articulosbloque': ( _ ) =>  const NewArticulosBloqueView(),
         },
         initialRoute: 'login',
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proformas/models/articulobloquemodel.dart';
+import 'package:proformas/models/compania.dart';
 import 'package:proformas/providers/userprovider.dart';
 import 'package:proformas/services/helperservice.dart';
 import 'package:proformas/services/notificationservice.dart';
@@ -12,7 +13,8 @@ import 'package:intl/intl.dart';
 
 class HabladoresView extends StatelessWidget {
   final List<ArticuloBloque>? articulosBloque;
-  const HabladoresView({super.key,this.articulosBloque,});
+  final Compania compania;
+  const HabladoresView({super.key,this.articulosBloque, required this.compania});
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +131,7 @@ class HabladoresView extends StatelessWidget {
                 ],
               ),
             ),
-            drawer: const MenuDrawer(),
+            drawer: MenuDrawer(compania: compania,),
           );
           
         },), 

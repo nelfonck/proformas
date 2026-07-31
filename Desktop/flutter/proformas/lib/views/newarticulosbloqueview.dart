@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:proformas/data/exceptions/api_exception.dart';
+import 'package:proformas/models/compania.dart';
 import 'package:proformas/services/notificationservice.dart';
 import 'package:proformas/viewmodels/articulosbloqueviewmodel.dart';
 import 'package:proformas/views/habladoresview.dart';
@@ -9,7 +10,8 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class NewArticulosBloqueView extends StatefulWidget {
-  const NewArticulosBloqueView({super.key, });
+  const NewArticulosBloqueView({super.key, required this.compania});
+  final Compania compania;
 
   @override
   State<NewArticulosBloqueView> createState() => _NewArticulosBloqueViewState();
@@ -49,6 +51,7 @@ class _NewArticulosBloqueViewState extends State<NewArticulosBloqueView> {
                         context,
                         MaterialPageRoute(
                           builder: (_) => HabladoresView(
+                            compania: widget.compania,
                             articulosBloque: model.list,
                           ),
                         ),
@@ -184,7 +187,7 @@ class _NewArticulosBloqueViewState extends State<NewArticulosBloqueView> {
               ),
             ],
           ),
-          drawer: const MenuDrawer(),
+          drawer: MenuDrawer(compania: widget.compania ),
         ); 
         },), 
       ),

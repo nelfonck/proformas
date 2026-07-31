@@ -41,7 +41,7 @@ class HistoryViewModel extends ChangeNotifier {
   final ProformaRepository _proformaRepository = ProformaRepository(ProformaService(), ConfigService()); 
   final EmailRepository _emailRepository = EmailRepository(EmailService(), ConfigService()); 
   final UpdateRepository _updateRepository = UpdateRepository(UpdateService());
-  Compania? compania;
+  late Compania compania;
   DateTime date  = DateTime.now();
   DateTime from = DateTime.now();
   List<PreProforma> preproformas = [];
@@ -49,8 +49,9 @@ class HistoryViewModel extends ChangeNotifier {
   bool? isLoading = false ;
   bool? mounted ;
   bool? sendingEmail = false;
+  bool _disposed = false;
 
-  void init(BuildContext context, Compania? compania, bool? mounted) async {
+  void init(BuildContext context, Compania compania, bool? mounted) async {
     this.context = context ;
     this.compania = compania ;
     this.mounted = mounted ;
@@ -72,26 +73,32 @@ class HistoryViewModel extends ChangeNotifier {
     }));
   }
 
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
   Future<void> getPreProformas() async {
     isLoading = true ;
-    notifyListeners();
+    safeNotifyListeners();
     preproformas = await _repository.getPreProformas();
     isLoading = false ;
-    notifyListeners();
+    safeNotifyListeners();
   }
 
   Future<void> getPreProformasByDate() async {
     isLoading = true ;
-    notifyListeners();
+    safeNotifyListeners();
     preproformas = await _repository.getPreProformasByDate( from, date );
     isLoading = false ;
-    notifyListeners();
+    safeNotifyListeners();
   }
 
   Future<dynamic> addPreProforma( PreProforma preProforma ) async {
     final PreProforma result = await _repository.addPreProforma(preProforma);
     preproformas.insert( 0, result);
-    notifyListeners();
+    safeNotifyListeners();
     return result ;
   }
 
@@ -115,7 +122,7 @@ class HistoryViewModel extends ChangeNotifier {
       throw Exception('Preproforma es null');
     }
 
-    notifyListeners();
+    safeNotifyListeners();
 
   }
 
@@ -126,23 +133,23 @@ class HistoryViewModel extends ChangeNotifier {
     preProformaCloned = getPreProformaSubTotalSinDescuento(preProformaCloned);
 
     final List<PreProformaDetalle> preproformadetalle = await _repository.getPreproformaDetalleById( preProforma.id );
-    if (preProformaCloned!=null && compania!=null){
-      final Map<String, dynamic>? result = await _emailRepository.sendEmail( preProformaCloned, preproformadetalle, compania! );
+    if (preProformaCloned!=null){
+      final Map<String, dynamic>? result = await _emailRepository.sendEmail( preProformaCloned, preproformadetalle, compania);
       return result ;
     }
-    return throw Exception('Preproforma o compania es null');
+    return throw Exception('Preproforma es null');
   }
 
   void setSendingEmail(bool? value){
     sendingEmail = value;
     if (context?.mounted ??false ){
-      notifyListeners();
+      safeNotifyListeners();
     }
   }
 
   void setPreProforma( int index, PreProforma preProforma ) {
     preproformas[index] = preProforma ;
-    notifyListeners();
+    safeNotifyListeners();
   }
 
   Future<void> deletePreProforma( int index) async {
@@ -151,18 +158,18 @@ class HistoryViewModel extends ChangeNotifier {
 
     if ( result['deleted'] ){
       preproformas.removeAt( index );
-      notifyListeners();
+      safeNotifyListeners();
     }
   }
 
   void setToDate( DateTime date ){
     this.date = date ;
-    notifyListeners();
+    safeNotifyListeners();
   }
 
   void setFromDate( DateTime date ){
     from = date ;
-    notifyListeners();
+    safeNotifyListeners();
   }
 
   
@@ -242,16 +249,16 @@ class HistoryViewModel extends ChangeNotifier {
     pageFormat: PdfPageFormat.a4,
     build: (pw.Context context) => [
       //Logo
-      if (compania?.logo != null)
-      pw.Image(pw.MemoryImage(compania!.logo!)),
+      if (compania.logo != null)
+      pw.Image(pw.MemoryImage(compania.logo!)),
       //title
       pw.Text(
-        compania?.razonSocial ?? '',
+        compania.razonSocial ?? '',
         style: pw.TextStyle(fontWeight: FontWeight.bold),
       ),
-      pw.Text('Cedula: ${compania?.identificacion}'),
-      pw.Text('Telefono: ${compania?.telefono}'),
-      pw.Text('Dirección: ${compania?.direccion}'),
+      pw.Text('Cedula: ${compania.identificacion}'),
+      pw.Text('Telefono: ${compania.telefono}'),
+      pw.Text('Dirección: ${compania.direccion}'),
       pw.SizedBox(height: 10),
       pw.Table(
         border: pw.TableBorder.all(color: PdfColors.grey),
@@ -549,5 +556,11 @@ class HistoryViewModel extends ChangeNotifier {
       return completePhone;
     }
     return completePhone;
+  }
+
+  void safeNotifyListeners(){
+    if (!_disposed){
+      notifyListeners();
+    }
   }
 }

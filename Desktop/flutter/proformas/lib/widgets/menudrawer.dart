@@ -2,19 +2,26 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:proformas/consts/globals.dart';
+import 'package:proformas/models/compania.dart';
 import 'package:proformas/providers/userprovider.dart';
 import 'package:proformas/repositories/usuariorepository.dart';
 import 'package:proformas/services/configservice.dart';
 import 'package:proformas/services/notificationservice.dart';
 import 'package:proformas/services/usuarioservice.dart';
+import 'package:proformas/views/articulopageview.dart';
+import 'package:proformas/views/habladoresview.dart';
+import 'package:proformas/views/historyview.dart';
+import 'package:proformas/views/newarticulosbloqueview.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
-    super.key
+    super.key,
+    required this.compania
   });
 
+  final Compania compania;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +73,11 @@ class MenuDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context); // Cerrar el drawer
 
-              Navigator.pushNamedAndRemoveUntil(
+              Navigator.pushAndRemoveUntil(
                 context,
-                'history',
+                MaterialPageRoute(
+                  builder: (_) => HistoryView(compania: compania,),
+                ),
                 (route) => false,
                 );
             },
@@ -79,9 +88,11 @@ class MenuDrawer extends StatelessWidget {
             onTap: () async{
               if (userProvider.getUsuario()?.superusuario == 'S'){
                 Navigator.pop(context);
-                Navigator.pushNamedAndRemoveUntil(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  'articulo',
+                MaterialPageRoute(
+                  builder: (_) => ArticuloPageView(compania: compania,),
+                ),
                   (route) => false,
                   ); 
               } else {
@@ -91,9 +102,11 @@ class MenuDrawer extends StatelessWidget {
                     if (resp['existe_accion']){
                       if (context.mounted){
                         Navigator.pop(context);
-                        Navigator.pushNamedAndRemoveUntil(
+                        Navigator.pushAndRemoveUntil(
                           context,
-                          'articulo',
+                          MaterialPageRoute(
+                            builder: (_) => ArticuloPageView(compania: compania,),
+                          ),
                           (route) => false,
                           );
                       }
@@ -112,9 +125,11 @@ class MenuDrawer extends StatelessWidget {
             title: const Text('Habladores'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamedAndRemoveUntil(
+              Navigator.pushAndRemoveUntil(
                 context,
-                'habladores',
+                MaterialPageRoute(
+                  builder: (_) => HabladoresView(compania: compania,),
+                ),
                 (route) => false,
                 );
             },
@@ -124,9 +139,11 @@ class MenuDrawer extends StatelessWidget {
             title: const Text('Insertar articulos en bloque'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamedAndRemoveUntil(
+              Navigator.pushAndRemoveUntil(
                 context,
-                'articulosbloque',
+                MaterialPageRoute(
+                  builder: (_) => NewArticulosBloqueView(compania: compania,),
+                ),
                 (route) => false,
                 );
             },

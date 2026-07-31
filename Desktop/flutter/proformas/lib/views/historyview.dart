@@ -48,7 +48,7 @@ class _HistoryViewState extends State<HistoryView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Pre proformas'),
-                  Text( model.compania?.razonSocial ?? '' )
+                  Text( widget.compania.razonSocial ?? '' )
                 ],
               ),
               elevation: 0,
@@ -130,7 +130,7 @@ class _HistoryViewState extends State<HistoryView> {
               },
               child: const Icon(Icons.add),
             ),
-            drawer:  const MenuDrawer(),
+            drawer:   MenuDrawer(compania: widget.compania,),
           );
           
         },), 

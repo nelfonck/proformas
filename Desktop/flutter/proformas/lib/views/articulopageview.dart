@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proformas/models/compania.dart';
 import 'package:proformas/services/notificationservice.dart';
 import 'package:proformas/viewmodels/articuloviewmodel.dart';
 import 'package:proformas/views/comparararticulopage.dart';
@@ -11,8 +12,8 @@ import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
 
 class ArticuloPageView extends StatefulWidget {
-  const ArticuloPageView({super.key, });
-
+  const ArticuloPageView({super.key, required this.compania });
+  final  Compania compania;
   @override
   State<ArticuloPageView> createState() => _ArticuloPageViewState();
 }
@@ -162,7 +163,7 @@ class _ArticuloPageViewState extends State<ArticuloPageView> with TickerProvider
                   BarcodeWidget(model: model,),
                 ],
               ),
-              drawer: const MenuDrawer(),
+              drawer: MenuDrawer(compania: widget.compania,),
             );
 
             }),
