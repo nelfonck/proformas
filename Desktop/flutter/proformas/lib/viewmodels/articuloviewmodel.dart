@@ -35,6 +35,7 @@ class ArticuloViewModel extends ChangeNotifier {
   final UnidadMedidaRepository _unidadMedidaRepository = UnidadMedidaRepository(UnidadMedidaService(), ConfigService()); 
   final UnidadRepository _unidadRepository = UnidadRepository(UnidadService(), ConfigService()); 
   Articulo? articulo ;
+  Articulo? articuloLocalViewOnly ;
   ArticuloMla? articulomla ;
   List<Familia> familias = [] ;
   List<Marca> marcas = [] ;
@@ -344,6 +345,10 @@ class ArticuloViewModel extends ChangeNotifier {
         Navigator.of(_context!).pop();
         Dlg.showError(_context!, error.toString());
       });
+
+      if (respArticuloMla['statusCode'] == 200){
+        articuloLocalViewOnly = articulo?.copyWith();
+      }
       // ignore: use_build_context_synchronously
       Navigator.of(_context!).pop();
       

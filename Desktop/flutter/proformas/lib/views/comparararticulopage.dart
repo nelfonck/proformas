@@ -87,7 +87,7 @@ class _CompararArticuloPageState extends State<CompararArticuloPage> {
                                 )
                               ),
                               height: 30,
-                              child: Center(child: Text('₡ ${format.format(widget.model?.articulo?.costo ?? 0)}')),
+                              child: Center(child: Text('₡ ${format.format(widget.model?.articuloLocalViewOnly?.costo ?? 0)}')),
                             ),
                           ),
                           Expanded(
@@ -127,7 +127,7 @@ class _CompararArticuloPageState extends State<CompararArticuloPage> {
                                 )
                               ),
                               height: 30,
-                              child: Center(child: Text('₡ ${format.format(widget.model?.articulo?.venta ?? 0)}')),
+                              child: Center(child: Text('₡ ${format.format(widget.model?.articuloLocalViewOnly?.venta ?? 0)}')),
                             ),
                           ),
                           Expanded(
