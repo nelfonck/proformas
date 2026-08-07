@@ -6,6 +6,7 @@ import 'package:proformas/providers/configprovider.dart';
 import 'package:proformas/providers/userprovider.dart';
 import 'package:proformas/views/configview.dart';
 import 'package:proformas/views/loginview.dart';
+import 'package:proformas/views/resultadoscannerview.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -70,8 +71,9 @@ class MyApp extends StatelessWidget {
         routes:{
           'login': ( _ ) =>  const LoginView(),
           'config': ( _ ) =>  const ConfigView(),
+          'resultadoscanner': (_) => ResultadoScannerView()
         },
-        initialRoute: 'login',
+        initialRoute: 'resultadoscanner',
       ),
     );
   }
