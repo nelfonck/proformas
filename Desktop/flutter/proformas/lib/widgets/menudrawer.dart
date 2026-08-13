@@ -12,6 +12,7 @@ import 'package:proformas/views/articulopageview.dart';
 import 'package:proformas/views/habladoresview.dart';
 import 'package:proformas/views/historyview.dart';
 import 'package:proformas/views/newarticulosbloqueview.dart';
+import 'package:proformas/views/resultadoscannerview.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -143,6 +144,20 @@ class MenuDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => NewArticulosBloqueView(compania: compania,),
+                ),
+                (route) => false,
+                );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_basket),
+            title: const Text('Escanear compra'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ResultadoScannerView(),
                 ),
                 (route) => false,
                 );

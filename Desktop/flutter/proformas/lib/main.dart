@@ -70,10 +70,9 @@ class MyApp extends StatelessWidget {
         navigatorKey: ContextHolder.key,
         routes:{
           'login': ( _ ) =>  const LoginView(),
-          'config': ( _ ) =>  const ConfigView(),
-          'resultadoscanner': (_) => ResultadoScannerView()
+          'config': ( _ ) =>  const ConfigView()
         },
-        initialRoute: 'resultadoscanner',
+        initialRoute: 'login',
       ),
     );
   }

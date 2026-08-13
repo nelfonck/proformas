@@ -22,23 +22,23 @@ class Proveedor {
     Proveedor copyWith({
         String? codProveedor,
         String? razsocial,
-        String? identificacin,
+        String? identificacion,
     }) => 
         Proveedor(
             codProveedor: codProveedor ?? this.codProveedor,
             razsocial: razsocial ?? this.razsocial,
-            identificacion: identificacin ?? this.identificacion,
+            identificacion: identificacion ?? this.identificacion,
         );
 
     factory Proveedor.fromJson(Map<String, dynamic> json) => Proveedor(
         codProveedor: json["cod_proveedor"],
         razsocial: json["razsocial"],
-        identificacion: json["identificación"],
+        identificacion: json["cedula"],
     );
 
     Map<String, dynamic> toJson() => {
         "cod_proveedor": codProveedor,
         "razsocial": razsocial,
-        "identificación": identificacion,
+        "identificacion": identificacion,
     };
 }

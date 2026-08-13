@@ -34,7 +34,7 @@ class BuscarProveedorView extends StatelessWidget {
                         prefixIcon: const Icon(Icons.person_search),
                         suffixIcon: IconButton(
                           onPressed: () {
-                            
+                            model.buscarProveedores();
                           },
                           icon: const Icon(Icons.search),
                         ),
