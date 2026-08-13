@@ -23,7 +23,7 @@ class BuscarProveedorService {
     if (resp.statusCode == 200) {
 
       final Map<String, dynamic> map = jsonDecode(resp.body);
-      final  decoded = map['bodegas'];
+      final  decoded = map['proveedores'];
 
       return decoded.map<Proveedor>((e) => Proveedor.fromJson(e)).toList();
 

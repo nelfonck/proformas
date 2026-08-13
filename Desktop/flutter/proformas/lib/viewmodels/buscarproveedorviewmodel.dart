@@ -24,13 +24,13 @@ class BuscarProveedorViewModel extends ChangeNotifier{
   }
 
   void init(){
-    proveedores.add(
+    /*proveedores.add(
       Proveedor(codProveedor: "1420", razsocial: "ISLENA DE ALIMENTOS", identificacion: "333")
     );
     proveedores.add(
       Proveedor(codProveedor: "1640", razsocial: "COMPANIA POZUELO", identificacion: "4323452356")
     );
-    _safeNotifyListeners();
+    _safeNotifyListeners();*/
   }
 
   void _safeNotifyListeners(){
