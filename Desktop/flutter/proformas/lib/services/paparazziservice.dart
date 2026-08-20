@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:proformas/consts/globals.dart';
 
+
 class PaparazziService {
 
   static final PaparazziService _instance = PaparazziService.internal();
@@ -11,24 +12,7 @@ class PaparazziService {
 
   factory PaparazziService() => _instance ;
 
-  Future<Map<String, dynamic>> getMarcas( String baseUrl ) async {
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/marcas',
-        {'api_key': Globals.apikey});
-
-    final resp = await http.get(url);
-
-    if (resp.statusCode == 200) {
-
-      final Map<String, dynamic> map = jsonDecode(resp.body);
-
-      return map ;
-
-    } else {
-      return Future.error(resp.body);
-    }     
-  }
-
-  Future<Map<String,dynamic>> subirImagen(String baseUrl, File imagen, String foldername) async {
+  Future<Map<String,dynamic>> subirImagen(String baseUrl, File imagen, String rutaBase, String folder, String codArticulo) async {
 
     var request = http.MultipartRequest(
       'POST',
@@ -36,7 +20,9 @@ class PaparazziService {
           {'api_key': Globals.apikey}
     ));
 
-    request.fields['foldername'] = foldername;
+    request.fields['ruta-base'] = rutaBase;
+    request.fields['folder'] = folder;
+    request.fields['cod-articulo'] = codArticulo;
 
     request.files.add(
       await http.MultipartFile.fromPath(
@@ -47,6 +33,7 @@ class PaparazziService {
 
     var response = await request.send();
     final body = await response.stream.bytesToString();
+
     final Map<String, dynamic> data = jsonDecode(body);
 
     if(response.statusCode == 200){
@@ -54,6 +41,33 @@ class PaparazziService {
     }else{
       throw data;
     }
+  }
+
+  Future<Map<String,dynamic>> checkCode(String baseUrl, String codArticulo, String codProveedor) async {
+
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/check-code',
+        {'api_key': Globals.apikey});
+
+    final params = {
+      "cod_articulo": codArticulo,
+      "cod_proveedor": codProveedor
+    };
+
+    final resp = await http.post(
+      url,
+      body: jsonEncode(params),
+      headers: Globals.headers
+    );
+
+    if (resp.statusCode == 200) {
+
+      final Map<String, dynamic> map = jsonDecode(resp.body);
+
+      return map;
+
+    } else {
+      return Future.error(resp.body);
+    }     
   }
   
 }

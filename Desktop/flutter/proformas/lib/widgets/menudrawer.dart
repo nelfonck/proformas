@@ -12,7 +12,7 @@ import 'package:proformas/views/articulopageview.dart';
 import 'package:proformas/views/habladoresview.dart';
 import 'package:proformas/views/historyview.dart';
 import 'package:proformas/views/newarticulosbloqueview.dart';
-import 'package:proformas/views/resultadoscannerview.dart';
+import 'package:proformas/views/paparazziview.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -157,7 +157,7 @@ class MenuDrawer extends StatelessWidget {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ResultadoScannerView(),
+                  builder: (_) => PaparazziView(compania: compania,),
                 ),
                 (route) => false,
                 );
