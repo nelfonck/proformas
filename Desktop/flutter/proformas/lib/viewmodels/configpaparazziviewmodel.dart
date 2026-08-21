@@ -12,6 +12,9 @@ class ConfigPaparazziviewModel extends ChangeNotifier{
   Future<void> loadParameters() async{
     final parameters = await SharedPreferences.getInstance();
     routeController.text = parameters.getString('ruta-facturas') ?? '';
+    if (routeController.text == ''){
+      routeController.text = '\\\\10.147.18.3\\Compartida\\Paparazzi' ;
+    }
   }
 
   Future<bool?> saveParameters() async{
