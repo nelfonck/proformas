@@ -58,6 +58,7 @@ class PaparazziViewModel extends ChangeNotifier{
     fotos.clear();
     codigoController.text =  '';
     codigoFocus.requestFocus();
+    _safeNotifyListeners();
   }
 
   Future<Map<String,dynamic>?> subirImagen()async{
