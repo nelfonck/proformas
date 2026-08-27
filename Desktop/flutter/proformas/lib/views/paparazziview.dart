@@ -37,7 +37,7 @@ class _ResultadoScannerViewState extends State<PaparazziView> {
             return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
-                title: Text('Paparazzi'),
+                title: Text('Escanear compra'),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.settings),
@@ -201,6 +201,7 @@ class _ResultadoScannerViewState extends State<PaparazziView> {
 
   Future<void> checkCodeMethod(PaparazziViewModel model, BuildContext context) async {
     try {
+      if (model.codigoController.text.isEmpty) return;
       final resp = await model.checkCode();
       if (resp!=null){
         if (resp['statusCode']==200){
