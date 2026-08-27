@@ -27,7 +27,6 @@
         <action android:name="android.support.customtabs.action.CustomTabsService" />
     </intent>
     </queries>
-    
     <application
         android:label="proformas"
         android:name="${applicationName}"
