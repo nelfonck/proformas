@@ -18,6 +18,9 @@ class LoginViewModel extends ChangeNotifier{
   final BodegaRepository _bodegaRepository = BodegaRepository(BodegaService(), ConfigService()); 
   final UsuarioReposotory _usuarioReposotory = UsuarioReposotory(UsuarioService(), ConfigService()); 
   final CompaniaRepository _companiaRepository = CompaniaRepository(CompaniaService(), ConfigService());
+  TextEditingController userController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+
   bool loading = false;
 
   Compania? compania ;  
@@ -26,7 +29,45 @@ class LoginViewModel extends ChangeNotifier{
   Bodega? lastUsedBodega;
   Compania? lastCompany;
   BuildContext? context ;
+  bool rememberLogin = false;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
   
+  void setRememberLogin(bool value){
+    rememberLogin = !rememberLogin;
+    _safeNotifyListeners();
+  }
+
+
+  Future<void> saveLoginCredentials()async{
+      SharedPreferences prefs = await  SharedPreferences.getInstance();
+      prefs.setString('user', rememberLogin ? userController.text : '');
+      prefs.setString('pass', rememberLogin ? passController.text: '');
+      prefs.setBool('remember-login', rememberLogin);
+  }
+
+  Future<void> restoreLoginCredentials()async{
+      SharedPreferences prefs = await  SharedPreferences.getInstance();
+      String? user = prefs.getString('user');
+      String? pass = prefs.getString('pass');
+      bool? remember = prefs.getBool('remember-login');
+
+      if (prefs.containsKey('remember-login')){
+        if (remember!=null){
+          if (remember){
+            userController.text = user ?? '';
+            passController.text = pass ?? '';
+            rememberLogin = remember;
+            _safeNotifyListeners();
+          }
+        }
+      }
+  }
 
   void init( BuildContext context ) async {
     this.context = context ;
@@ -36,15 +77,17 @@ class LoginViewModel extends ChangeNotifier{
           Navigator.pushReplacementNamed(context, 'config');
         }
       } else {
+        await restoreLoginCredentials();
+
         loading = true;
-        notifyListeners();
+        _safeNotifyListeners();
         lastUsedBodega = await getLastUsedBodega();
         if ( lastUsedBodega == null ){
           getBodegas().onError((error, stackTrace) {
             if (context.mounted){
               Dlg.showError(context, error.toString());
               loading = false;
-              notifyListeners();
+              _safeNotifyListeners();
               return;
             }
           });
@@ -58,7 +101,7 @@ class LoginViewModel extends ChangeNotifier{
             if (context.mounted){
               Dlg.showError(context, error.toString());
               loading = false;
-              notifyListeners();
+              _safeNotifyListeners();
               return;
             }
           });
@@ -69,7 +112,7 @@ class LoginViewModel extends ChangeNotifier{
           compania = lastCompany;
         }
         loading = false;
-        notifyListeners();
+        _safeNotifyListeners();
       }
     },);
   }
@@ -113,12 +156,12 @@ class LoginViewModel extends ChangeNotifier{
 
   Future<void> getBodegas() async {
     bodegas = await _bodegaRepository.getBodegas();
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   Future<void> getCompania() async {
     compania = await _companiaRepository.getCompania();
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
 
@@ -144,5 +187,11 @@ class LoginViewModel extends ChangeNotifier{
     prefs.setString('telefono', compania.telefono ?? '');
     prefs.setString('direccion', compania.direccion ?? '');
     prefs.setString('logo',  HelperService.uint8ListToBase64String(compania.logo));
+  }
+
+  void _safeNotifyListeners(){
+    if (!_disposed){
+      notifyListeners();
+    }
   }
 }

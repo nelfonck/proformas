@@ -15,8 +15,6 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController userController = TextEditingController();
-    TextEditingController passController = TextEditingController();
     BodegaProvider bodega = Provider.of<BodegaProvider>(context, listen: false);
     UserProvider user =  Provider.of<UserProvider>(context, listen: false);
 
@@ -51,7 +49,7 @@ class LoginView extends StatelessWidget {
                     const Text('Iniciar sesion'),
                     const SizedBox(height: 30),
                     TextFormField(
-                      controller: userController,
+                      controller: model.userController,
                       decoration: const InputDecoration(
                         labelText: 'Usuario',
                         border: OutlineInputBorder(),
@@ -59,7 +57,7 @@ class LoginView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      controller: passController,
+                      controller: model.passController,
                       decoration: const InputDecoration(
                         labelText: 'Contraseña',
                         border: OutlineInputBorder(),
@@ -99,6 +97,21 @@ class LoginView extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Expanded(child: Text('Recordar datos de inicio sesión', textAlign: TextAlign.end,)),
+                        SizedBox(width: 5,),
+                        Switch(
+                          value: model.rememberLogin,
+                           onChanged: (value){
+                            model.setRememberLogin(value);
+                          }
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
@@ -117,12 +130,12 @@ class LoginView extends StatelessWidget {
                             return;
                           }
                           
-                          await model.getUsuario(userController.text, passController.text).onError((error, stackTrace) {
+                          await model.getUsuario(model.userController.text, model.passController.text).onError((error, stackTrace) {
                             if (context.mounted){
                               Dlg.showError(context, error.toString());
                             }
                             return null;
-                          }).then((value){
+                          }).then((value) async{
 
                               if ( value?['statusCode'] == 201 ){
                                 if (context.mounted){
@@ -130,6 +143,7 @@ class LoginView extends StatelessWidget {
                                 }
                 
                               } else if ( value?['statusCode'] == 200 ){
+
                 
                                 if ( bodega.getBodega() == null ) {
                                   if (context.mounted){
@@ -137,6 +151,10 @@ class LoginView extends StatelessWidget {
                                   }
                                   return ;
                                 }
+                                
+                                //Guardar credenciales si es requerido por el usuario
+                                await model.saveLoginCredentials();
+                               
                 
                                 final Usuario usuario = Usuario.fromMap( value?['usuario'] );
                                 user.setUsuario( usuario );
