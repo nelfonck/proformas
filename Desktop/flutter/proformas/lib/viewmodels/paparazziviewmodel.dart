@@ -16,12 +16,13 @@ class PaparazziViewModel extends ChangeNotifier{
 
   TextEditingController  consecutivoController = TextEditingController();
   bool mostrarProductoEncontrado = false; 
-  bool bloquearCampo = true;
+  bool bloquearCampo = false;
   bool _disposed = false;
   Proveedor? selectedProveedor;
   final List<File> fotos = [];
   TextEditingController codigoController = TextEditingController();
   FocusNode codigoFocus = FocusNode();
+  FocusNode consecutivoFocus = FocusNode();
 
   Future<Map<String,dynamic>?> checkCode()async{
     if (selectedProveedor==null){
@@ -57,7 +58,8 @@ class PaparazziViewModel extends ChangeNotifier{
     consecutivoController.text = '';
     fotos.clear();
     codigoController.text =  '';
-    codigoFocus.requestFocus();
+    setBloquearCampo(false);
+    consecutivoFocus.requestFocus();
   }
 
   Future<Map<String,dynamic>?> subirImagen()async{

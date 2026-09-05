@@ -7,7 +7,6 @@ import 'package:proformas/services/notificationservice.dart';
 import 'package:proformas/viewmodels/paparazziviewmodel.dart';
 import 'package:proformas/views/buscarproveedorview.dart';
 import 'package:proformas/views/configpaparazziview.dart';
-import 'package:proformas/views/scanner_factura_view.dart';
 import 'package:proformas/widgets/menudrawer.dart';
 import 'package:proformas/widgets/modelready.dart';
 import 'package:provider/provider.dart';
@@ -99,11 +98,18 @@ class _ResultadoScannerViewState extends State<PaparazziView> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    onSubmitted: (value){
+                      model.setBloquearCampo(true);
+                      model.codigoFocus.requestFocus();
+                    },
                     readOnly: model.bloquearCampo,
+                    focusNode: model.consecutivoFocus,
+                    keyboardType: TextInputType.number,
                     controller: model.consecutivoController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       label: Text('Consecutivo factura'),
+                      hint: Text('Ultimos 5 digitos del consecutivo'),
                       prefixIcon: IconButton(
                         onPressed: (){
 
@@ -112,25 +118,6 @@ class _ResultadoScannerViewState extends State<PaparazziView> {
                         }, 
                         icon: Icon( model.bloquearCampo ? Icons.lock : Icons.lock_open,)
                       ),
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          final resultado = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const ScannerFacturaView(),
-                            ),
-                          );
-                          if (resultado!=null && resultado is String){
-
-                            model.consecutivoController.text = resultado ;
-
-                          }
-
-                          model.setBloquearCampo(true);
-
-                        }, 
-                        icon: Icon(Icons.camera_alt)
-                      )
                     ),
                   ),
                 ),
