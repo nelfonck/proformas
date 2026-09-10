@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proformas/services/helperservice.dart';
 import 'package:proformas/viewmodels/articuloviewmodel.dart';
+import 'package:proformas/views/filtroarticuloview.dart';
 import 'package:proformas/views/scannerpage.dart';
 
 class BarcodeWidget extends StatelessWidget {
@@ -36,6 +37,18 @@ class BarcodeWidget extends StatelessWidget {
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     labelText: 'Código',
+                    prefixIcon: IconButton(onPressed: ()async{
+                      final result = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: ( _ ) => const FiltroArticuloView()
+                        )
+                      );
+                      if (result!=null){
+                        model?.codigoController.text = result ;
+                        model?.findItem();
+                      }
+                    }, 
+                    icon: Icon( Icons.search )),
                     suffixIcon: IconButton(
                       onPressed:() async {
                         model?.findItem();

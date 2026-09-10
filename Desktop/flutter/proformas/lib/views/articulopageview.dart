@@ -147,21 +147,23 @@ class _ArticuloPageViewState extends State<ArticuloPageView> with TickerProvider
                   icon: const Icon(Icons.menu)
                 ),
               ),
-              body: Column(
-                children: [
-                  Expanded(
-                    child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        DetalleArticuloPage(  model: model,),
-                        UnidadMedidaArticuloPage( model: model,),
-                        PreciosArticuloPage(  model: model ),
-                        CompararArticuloPage( model: model, ),
-                      ],
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TabBarView(
+                        controller: tabController,
+                        children: [
+                          DetalleArticuloPage(  model: model,),
+                          UnidadMedidaArticuloPage( model: model,),
+                          PreciosArticuloPage(  model: model ),
+                          CompararArticuloPage( model: model, ),
+                        ],
+                      ),
                     ),
-                  ),
-                  BarcodeWidget(model: model,),
-                ],
+                    BarcodeWidget(model: model,),
+                  ],
+                ),
               ),
               drawer: MenuDrawer(compania: widget.compania,),
             );
