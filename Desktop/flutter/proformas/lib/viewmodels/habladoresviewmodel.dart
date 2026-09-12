@@ -17,6 +17,8 @@ class HabladoresViewModel extends ChangeNotifier {
   final ArticuloRepository _articuloRepository = ArticuloRepository(ArticuloService(), ConfigService());
   final HabladorHHRepository _habladorHHRepository = HabladorHHRepository(HabladorHHService(), ConfigService());
   bool? useBroadCast = false ;
+  bool? escanearConCamara = false ;
+  
   List<HabladorHh> habladores = [];
   BuildContext? _context;
   FocusNode focusNode = FocusNode() ; 
@@ -30,6 +32,7 @@ class HabladoresViewModel extends ChangeNotifier {
         Navigator.of(context).pushReplacementNamed('config');
       } else {
         useBroadCast = _configService.getUseBroadcast();
+        escanearConCamara = _configService.getEscanearConCamara();
 
         if (articulosBloque != null && articulosBloque.isNotEmpty) {
           final respInsertBloqToDb = await insertHabladorHHBloqToDb(articulosBloque);

@@ -22,20 +22,23 @@ class ConfigService {
     int? port = prefs.getInt('port');
     bool? useBroadCast = prefs.getBool('usebroadcast');
     String? broadcastLink = prefs.getString('broadcastlink');
-    await setConfigToProvider(Con(host: host, port: port), useBroadCast, broadcastLink);
+    bool escanearConCamara = prefs.getBool('escanearconcamara') ?? false;
+
+    await setConfigToProvider(Con(host: host, port: port), useBroadCast, broadcastLink, escanearConCamara);
 
     return false ;
   }
 
-  Future<void> setConfigToProvider(Con con, bool? useBroadCast, String? broadcastLink ) async {
+  Future<void> setConfigToProvider(Con con, bool? useBroadCast, String? broadcastLink, bool escanearConCamara) async {
     //Put params to ConfigProvider
     ConfigProvider configProvider = Provider.of<ConfigProvider>(ContextHolder.currentContext, listen: false);
     configProvider.setCon(con); 
     configProvider.setUseBroadcast(useBroadCast!);
     configProvider.setBroadCastLink(broadcastLink!);
+    configProvider.setEscanearConCamara(escanearConCamara);
   }
 
-  Future<void> setConfig(Con con, bool useBroadCast, String broadcastLink ) async {
+  Future<void> setConfig(Con con, bool useBroadCast, String broadcastLink, escanearConCamara ) async {
     
     //Put params to ConfigProvider
     ConfigProvider configProvider = Provider.of<ConfigProvider>(ContextHolder.currentContext, listen: false);
@@ -47,7 +50,13 @@ class ConfigService {
     prefs.setInt('port', con.port!);
     prefs.setBool('usebroadcast', useBroadCast);
     prefs.setString('broadcastlink', broadcastLink);
+    prefs.setBool('escanearconcamara', escanearConCamara);
 
+  }
+
+  bool? getEscanearConCamara(){
+    ConfigProvider configProvider = Provider.of<ConfigProvider>(ContextHolder.currentContext, listen: false);
+    return configProvider.getEscanearConCamara();
   }
 
   String getBaseUrl()  {

@@ -261,26 +261,29 @@ class ToolsWidget extends StatelessWidget {
               autofocus: false,
               controller: txtCodigoController,
               decoration:  InputDecoration(
-                suffixIcon: IconButton(
-                  onPressed: () async {
-                  var res = await Navigator.push<String>(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ScannerPage(),
-                    ));
-                              
-                    if (res is String) {
-                      if ( res.isEmpty) return ;
-                      if (res == '-1') return ;
-
-                      txtCodigoController.text = res;
-                      countFocusNode.requestFocus();
-                      
-                    }
-                              
-                  },
+                suffixIcon: Visibility(
+                  visible: model.escanearConCamara ?? false,
+                  child: IconButton(
+                    onPressed: () async {
+                    var res = await Navigator.push<String>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ScannerPage(),
+                      ));
+                                
+                      if (res is String) {
+                        if ( res.isEmpty) return ;
+                        if (res == '-1') return ;
                   
-                  icon: const Icon(Icons.qr_code)
+                        txtCodigoController.text = res;
+                        countFocusNode.requestFocus();
+                        
+                      }
+                                
+                    },
+                    
+                    icon: const Icon(Icons.qr_code)
+                  ),
                 ),
                 hintText: 'Código',
                 prefixIcon: IconButton(

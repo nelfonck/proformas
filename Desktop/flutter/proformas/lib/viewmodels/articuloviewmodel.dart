@@ -44,6 +44,7 @@ class ArticuloViewModel extends ChangeNotifier {
   List<Unidad> ud = [] ;
   List<Articulo> articuloList = [];
   bool? useBroadCast = false ;
+  bool? escanearConCamara = false ;
   TextEditingController descripcionController  =  TextEditingController(); 
   TextEditingController cabysController  =  TextEditingController(); 
   PageController pageController = PageController();
@@ -77,6 +78,7 @@ class ArticuloViewModel extends ChangeNotifier {
         Navigator.of(context).pushReplacementNamed('config');
       } else {
         useBroadCast = _configService.getUseBroadcast();
+        escanearConCamara = _configService.getEscanearConCamara();
         await _getFamilias().onError((error, stackTrace) => Dlg.showError( _context! , error.toString()));
         await _getMarcas().onError((error, stackTrace) => Dlg.showError( _context! , error.toString()));
         await _getImpuestos().onError((error, stackTrace) => Dlg.showError( _context! , error.toString()));

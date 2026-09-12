@@ -209,37 +209,40 @@ class BarCodeW extends StatelessWidget {
                 ),
               ),
             ),
-            IconButton(
-              onPressed:() async {
-                var res = await Navigator.of(context).push<String>(
-                  MaterialPageRoute(
-                    builder: ( context ) => const ScannerPage()
-                  )
-                );
-                if ( res is String ){
-                  if ( res.isEmpty ) return ;
-                  if ( res == '-1' ) return ;
-      
-                  model?.codigoController?.text = res ;
-                  // ignore: use_build_context_synchronously
-                  Dlg.showLoading(context, 'Obteniendo datos del articulo');
-                  await model?.getArticulo( model?.codigoController?.text )
-                  .onError((error, stackTrace) {
-                    if (context.mounted){
-                     Dlg.showError(context, error.toString());
-                    }
-                  })
-                  .then(( resp ) async{
-                    if (context.mounted){
-                      Navigator.of(context).pop();
-                      if ( resp['statusCode'] == 201 ){
-                        await Dlg.showWarning(context, '${resp['message']}');
+            Visibility(
+              visible: model?.escanearConCamara ?? false,
+              child: IconButton(
+                onPressed:() async {
+                  var res = await Navigator.of(context).push<String>(
+                    MaterialPageRoute(
+                      builder: ( context ) => const ScannerPage()
+                    )
+                  );
+                  if ( res is String ){
+                    if ( res.isEmpty ) return ;
+                    if ( res == '-1' ) return ;
+                    
+                    model?.codigoController?.text = res ;
+                    // ignore: use_build_context_synchronously
+                    Dlg.showLoading(context, 'Obteniendo datos del articulo');
+                    await model?.getArticulo( model?.codigoController?.text )
+                    .onError((error, stackTrace) {
+                      if (context.mounted){
+                       Dlg.showError(context, error.toString());
                       }
-                    }
-                  });
-                }
-              }, 
-              icon: const Icon( Icons.qr_code)
+                    })
+                    .then(( resp ) async{
+                      if (context.mounted){
+                        Navigator.of(context).pop();
+                        if ( resp['statusCode'] == 201 ){
+                          await Dlg.showWarning(context, '${resp['message']}');
+                        }
+                      }
+                    });
+                  }
+                }, 
+                icon: const Icon( Icons.qr_code)
+              ),
             ),
           ],
         ),

@@ -7,17 +7,24 @@ class ConfigViewModel extends ChangeNotifier {
 
   final ConfigService _configService = ConfigService();
   bool? useBroadCast = false;
+  bool? escanearConCamara = false;
   
   void init( BuildContext context, TextEditingController host, TextEditingController port, TextEditingController broadcast) async {
     useBroadCast = getUseBroadCast();
     broadcast.text = getBroadCastLink() ?? '';
+    escanearConCamara = getEscanearConCamara();
     Con con = await getCon();
     host.text = con.host ?? '';
     port.text = con.port.toString();
+    notifyListeners();
   }
 
   bool? getUseBroadCast(){
     return _configService.getUseBroadcast();
+  }
+
+  bool? getEscanearConCamara(){
+    return _configService.getEscanearConCamara();
   }
 
   String? getBroadCastLink(){
@@ -29,11 +36,15 @@ class ConfigViewModel extends ChangeNotifier {
   }
 
   Future<void> setConfig( String host, String port, String broadcastLink ) async {
-    await _configService.setConfig( Con(host: host, port:  int.parse(port)), useBroadCast ?? false, broadcastLink);
+    await _configService.setConfig( Con(host: host, port:  int.parse(port)), useBroadCast ?? false, broadcastLink, escanearConCamara);
   }
 
   void setUseBroadcast( bool useBroadCast){
     this.useBroadCast = useBroadCast;
+    notifyListeners();
+  }
+  void setEscanearConCamara( bool escanearConCamara){
+    this.escanearConCamara = escanearConCamara;
     notifyListeners();
   }
 

@@ -57,22 +57,25 @@ class BarcodeWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              IconButton(
-                onPressed:() async {
-                  var res = await Navigator.of(context).push<String>(
-                    MaterialPageRoute(
-                      builder: ( context ) => const ScannerPage()
-                    )
-                  );
-                  if ( res is String ){
-                    if ( res.isEmpty ) return ;
-                    if ( res == '-1' ) return ;
-        
-                    model?.codigoController.text = res ;
-                    model?.findItem();
-                  }
-                }, 
-                icon: const Icon( Icons.qr_code)
+              Visibility(
+                visible: model?.escanearConCamara ?? false,
+                child: IconButton(
+                  onPressed:() async {
+                    var res = await Navigator.of(context).push<String>(
+                      MaterialPageRoute(
+                        builder: ( context ) => const ScannerPage()
+                      )
+                    );
+                    if ( res is String ){
+                      if ( res.isEmpty ) return ;
+                      if ( res == '-1' ) return ;
+                        
+                      model?.codigoController.text = res ;
+                      model?.findItem();
+                    }
+                  }, 
+                  icon: const Icon( Icons.qr_code)
+                ),
               ),
             ],
           ),

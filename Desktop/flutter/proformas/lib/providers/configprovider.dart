@@ -6,9 +6,14 @@ class ConfigProvider extends ChangeNotifier {
   Con? _con ;
   String? _broadCastLink;
   bool? _useBroadCast;
+  bool? _escanearConCamara;
 
   void setCon( Con con ) {
     _con = con ;
+  }
+
+  void setEscanearConCamara(bool value){
+    _escanearConCamara = value ;
   }
 
   void setBroadCastLink(String broadcastLink) {
@@ -28,5 +33,7 @@ class ConfigProvider extends ChangeNotifier {
   }
 
   Con? getCon() => _con ;
+
+  bool getEscanearConCamara() => _escanearConCamara ?? false;
   
 }

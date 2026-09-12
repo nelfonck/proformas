@@ -106,6 +106,17 @@ class ConfigView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20,),
+                  Row(
+                    children: [
+                      Text('Escanear codigo con camara '),
+                      Switch(
+                        value: model.escanearConCamara ?? false, 
+                        onChanged: (value){
+                          model.setEscanearConCamara(value);
+                        }
+                      )
+                    ],
+                  )
                 ],
               ),
             ),

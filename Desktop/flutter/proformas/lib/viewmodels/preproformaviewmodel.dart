@@ -19,6 +19,7 @@ class PreProformaViewModel extends ChangeNotifier {
   bool? mostrarTeclado = false ;
   bool? readOnly = true ;
   bool? useBroadCast = false ;
+  bool? escanearConCamara = false ;
   double? cantidad = 1 ;
   TextEditingController txtCodigoController = TextEditingController();
   FocusNode focusNode = FocusNode();
@@ -31,6 +32,7 @@ class PreProformaViewModel extends ChangeNotifier {
         Navigator.of(context).pushReplacementNamed('config');
       } else {
         useBroadCast = _configService.getUseBroadcast();
+        escanearConCamara = _configService.getEscanearConCamara();
   
         getPreproformaDetalleById().onError((error, stackTrace) {
           if (context.mounted){
