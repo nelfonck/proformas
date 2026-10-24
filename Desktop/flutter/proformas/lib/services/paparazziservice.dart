@@ -16,10 +16,9 @@ class PaparazziService {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.http(baseUrl, '/utilitiesapi/public/subir-imagen',
-          {'api_key': Globals.apikey}
-    ));
-
+      Uri.http(baseUrl, '/utilitiesapi/public/subir-imagen'));
+    
+    request.headers.addAll(Globals.headers);
     request.fields['ruta-base'] = rutaBase;
     request.fields['folder'] = folder;
     request.fields['cod-articulo'] = codArticulo;
@@ -45,8 +44,7 @@ class PaparazziService {
 
   Future<Map<String,dynamic>> checkCode(String baseUrl, String codArticulo, String codProveedor) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/check-code',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/check-code');
 
     final params = {
       "cod_articulo": codArticulo,

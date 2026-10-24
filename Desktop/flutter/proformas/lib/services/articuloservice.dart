@@ -17,12 +17,11 @@ class ArticuloService {
   Future<Map<String, dynamic>> getArticulo( String baseUrl, String? codigo ) async {
     final url = Uri.http(baseUrl, '/utilitiesapi/public/articulo',
         {
-          'api_key': Globals.apikey,
           'codigo': codigo
         }
     );
 
-    final resp = await http.get(url);
+    final resp = await http.get(url,headers: Globals.headers);
 
     if (resp.statusCode == 200) {
 
@@ -36,11 +35,7 @@ class ArticuloService {
   }
 
   Future<Map<String, dynamic>> getArticulosByDescription( String baseUrl, String txt ) async {
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/articulosbydescripcion',
-        {
-          'api_key': Globals.apikey
-        }
-    );
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/articulosbydescripcion');
 
     Map<String,dynamic> params = {
       'descripcion': txt
@@ -64,12 +59,11 @@ class ArticuloService {
   Future<Map<String, dynamic>> getArticulomla( String baseUrl, String codigo ) async {
     final url = Uri.http(baseUrl, '/utilitiesapi/public/articulomla',
         {
-          'api_key': Globals.apikey,
           'codigo': codigo
         }
     );
 
-    final resp = await http.get(url);
+    final resp = await http.get(url,headers: Globals.headers);
 
     if (resp.statusCode == 200) {
 
@@ -83,9 +77,7 @@ class ArticuloService {
   }
 
   Future<Map<String, dynamic>> updateArticulo(String baseUrl, Articulo articulo ) async {
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/updatearticulo',
-      {'api_key': Globals.apikey}
-    );
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/updatearticulo');
 
     Map<String, dynamic> params = {
       'articulo' : articulo.toMap()
@@ -109,9 +101,7 @@ class ArticuloService {
   Future<Map<String, dynamic>> insertArticulo(String baseUrl, Articulo articulo ) async {
     UserProvider user = Provider.of ( ContextHolder.currentContext, listen: false );
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertarticulo',
-      {'api_key': Globals.apikey}
-    );
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertarticulo');
 
     Map<String, dynamic> params = {
       'articulo' : articulo.toMap(),
@@ -141,9 +131,7 @@ class ArticuloService {
       'creado_por'   : user.getUsuario()?.codUsuario
     };
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertarhablador',
-      {'api_key': Globals.apikey}
-    );
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertarhablador');
 
     final resp = await http.post(
       url,

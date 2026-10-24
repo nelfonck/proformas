@@ -19,9 +19,9 @@ class HabladorHHService {
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
     final url = Uri.http(baseUrl, '/utilitiesapi/public/habladoreshh',
-        {'api_key': Globals.apikey, 'creado_por': userProvider.getUsuario()?.codUsuario});
+        {'creado_por': userProvider.getUsuario()?.codUsuario});
 
-    final resp = await http.get(url);
+    final resp = await http.get(url,headers: Globals.headers);
 
     if (resp.statusCode == 200) {
 
@@ -36,8 +36,7 @@ class HabladorHHService {
 
   Future<Map<String,dynamic>> insertHabladorHHToDb(BuildContext context, String baseUrl, HabladorHh hablador  ) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/inserthabladorhh',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/inserthabladorhh');
 
     final resp = await http.post(
       url,
@@ -57,8 +56,7 @@ class HabladorHHService {
   }
 
   Future<Map<String,dynamic>> insertHabladorHHBloqToDb(BuildContext context, String baseUrl, List<HabladorHh> list) async {
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/inserthabladorhhbloq',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/inserthabladorhhbloq');
     List<Map<String,dynamic>> listMap = list.map((e) => e.toMap()).toList();
     Map<String,dynamic> params = {
       'list': listMap
@@ -82,7 +80,7 @@ class HabladorHHService {
 
   Future<Map<String,dynamic>> deleteHablador(String baseUrl,int id) async{
     final url = Uri.http(baseUrl, '/utilitiesapi/public/deletehabladorhh',
-        {'api_key': Globals.apikey, 'id': id.toString()});
+        {'id': id.toString()});
 
     final resp = await http.delete(
       url,
@@ -102,7 +100,7 @@ class HabladorHHService {
 
   Future<Map<String,dynamic>> moveListToQupos(String baseUrl, List<HabladorHh> list) async{
     
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/movelisttoquposhabladorhh', {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/movelisttoquposhabladorhh');
     
     List<Map<String,dynamic>> listMapped = list.map((e) => e.toMap()).toList();
     Map<String,dynamic> params = {'lista':listMapped};
@@ -129,7 +127,7 @@ class HabladorHHService {
 
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/deletehabladorhhlist', {'api_key': Globals.apikey, 'creado_por': userProvider.getUsuario()?.codUsuario.toString()});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/deletehabladorhhlist', {'creado_por': userProvider.getUsuario()?.codUsuario.toString()});
     
     final resp = await http.delete(
       url,

@@ -15,8 +15,7 @@ class EmailService {
 
   Future<Map<String, dynamic>?> sendEmail( String baseUrl, PreProforma preProforma, List<PreProformaDetalle> preProformaDetalle, Compania compania) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/sendemail',
-        {'api_key': Globals.apikey});
+    final url = Uri.parse('http://$baseUrl/utilitiesapi/public/api/sendemail');
 
     final Map<String, dynamic> params = preProforma.toMap();
     params['detalle_proforma'] = preProformaDetalle.map<Map<String, dynamic>>((e) => e.toMap()).toList();

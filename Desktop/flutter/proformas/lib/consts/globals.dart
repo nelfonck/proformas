@@ -1,9 +1,8 @@
 class Globals {
 
-  static String apikey = "039b29d4-893c-43e0-961b-6157d978caec";
-
   static Map<String, String> headers =  {
         'Content-Type': 'application/json; charset=UTF-8',
+        'x-api-key': "039b29d4-893c-43e0-961b-6157d978caec",
       };
 
   static  String updateUrl = 'https://dl.dropboxusercontent.com/s/wzlrxoq208sw0av/apps.php?dl=0';

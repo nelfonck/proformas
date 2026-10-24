@@ -12,10 +12,9 @@ class BodegaService {
   factory BodegaService() => _instance ;
 
   Future<List<Bodega>> getBodegas( String baseUrl ) async {
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/bodegas',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/bodegas');
 
-    final resp = await http.get(url);
+    final resp = await http.get(url,headers: Globals.headers);
 
     if (resp.statusCode == 200) {
 

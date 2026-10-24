@@ -12,10 +12,9 @@ class CompaniaService {
   factory CompaniaService() => _instance ;
 
   Future<Compania> getCompania( String baseUrl ) async {
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/compania',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/compania');
 
-    final resp = await http.get(url);
+    final resp = await http.get(url,headers: Globals.headers);
 
     if (resp.statusCode == 200) {
 

@@ -66,6 +66,6 @@ class Compania {
         "tipo_identificacion": tipoIdentificacion,
         "telefono": telefono,
         "direccion": direccion,
-        "logo": logo ?? base64Encode( logo! ),
+        "logo": null,
     };
 }

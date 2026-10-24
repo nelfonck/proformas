@@ -14,11 +14,10 @@ class BuscarProveedorService {
   Future<List<Proveedor>> getProveedores( String baseUrl, String cliterio ) async {
     final url = Uri.http(baseUrl, '/utilitiesapi/public/proveedores',
         {
-          'api_key': Globals.apikey,
           'cliterio' : cliterio
         });
 
-    final resp = await http.get(url);
+    final resp = await http.get(url,headers: Globals.headers);
 
     if (resp.statusCode == 200) {
 

@@ -25,15 +25,15 @@ class Articulo {
     double? porcDescuentoActual;
     String? codImpuesto;
     String? habilitarCambiarPrecio;
-    String? cantidadMinDesc;
-    String? porcDescuentoXCant;
+    int? cantidadMinDesc;
+    double? porcDescuentoXCant;
     String? artControl;
     String? artGranel;
     String? aplicaInventario;
     String? activarArticulosRelacionados;
     dynamic ubicacion;
-    String? porcentajeComision;
-    String? porcentajeUtilidadSugerido;
+    double? porcentajeComision;
+    double? porcentajeUtilidadSugerido;
     dynamic notas;
     String? aplicaComandas;
     String? unidadCompra;
@@ -70,13 +70,13 @@ class Articulo {
     String? esReceta;
     String? esInsumo;
     String? aplicaDevoluciones;
-    String? porcDescuentoUltimaCompra;
+    double? porcDescuentoUltimaCompra;
     String? codUltimaFactura;
     DateTime? fechaUltimaVenta;
     String? conceptoFacturacion;
     String? ventaLibre;
-    String? costoEspecial;
-    String? porcentajeUtilidadDeseada;
+    double? costoEspecial;
+    double? porcentajeUtilidadDeseada;
     String? omitirMovInvInsumosReceta;
     String? aplicaTimbreOdontologico;
     String? precioFijo;
@@ -95,19 +95,19 @@ class Articulo {
     String? articuloPortada;
     String? servicioSalud;
     String? semoviente;
-    String? kilogramos;
-    String? porcentajeDescuentoCompras;
-    String? porcentajeDescuentoVentas;
+    double? kilogramos;
+    double? porcentajeDescuentoCompras;
+    double? porcentajeDescuentoVentas;
     String? bonificacion;
     String? notaComanda;
     String? aplicaRea;
     dynamic tarifaReducidaRea;
     String? bultosCargaCamionCheckout;
     String? solicitaFechaVencimientoCheckout;
-    String? costoDolaresReferencia;
+    double? costoDolaresReferencia;
     dynamic fechaUltimoCambioCabys;
     String? conocidoComo;
-    String? diasGarantia;
+    double? diasGarantia;
     dynamic tipoCalculoComision;
     String? articuloConSerie;
     Familia? familia;
@@ -242,15 +242,15 @@ class Articulo {
         double? porcDescuentoActual,
         String? codImpuesto,
         String? habilitarCambiarPrecio,
-        String? cantidadMinDesc,
-        String? porcDescuentoXCant,
+        int? cantidadMinDesc,
+        double? porcDescuentoXCant,
         String? artControl,
         String? artGranel,
         String? aplicaInventario,
         String? activarArticulosRelacionados,
         dynamic ubicacion,
-        String? porcentajeComision,
-        String? porcentajeUtilidadSugerido,
+        double? porcentajeComision,
+        double? porcentajeUtilidadSugerido,
         dynamic notas,
         String? aplicaComandas,
         String? unidadCompra,
@@ -287,13 +287,13 @@ class Articulo {
         String? esReceta,
         String? esInsumo,
         String? aplicaDevoluciones,
-        String? porcDescuentoUltimaCompra,
+        double? porcDescuentoUltimaCompra,
         String? codUltimaFactura,
         DateTime? fechaUltimaVenta,
         String? conceptoFacturacion,
         String? ventaLibre,
-        String? costoEspecial,
-        String? porcentajeUtilidadDeseada,
+        double? costoEspecial,
+        double? porcentajeUtilidadDeseada,
         String? omitirMovInvInsumosReceta,
         String? aplicaTimbreOdontologico,
         String? precioFijo,
@@ -312,19 +312,19 @@ class Articulo {
         String? articuloPortada,
         String? servicioSalud,
         String? semoviente,
-        String? kilogramos,
-        String? porcentajeDescuentoCompras,
-        String? porcentajeDescuentoVentas,
+        double? kilogramos,
+        double? porcentajeDescuentoCompras,
+        double? porcentajeDescuentoVentas,
         String? bonificacion,
         String? notaComanda,
         String? aplicaRea,
         dynamic tarifaReducidaRea,
         String? bultosCargaCamionCheckout,
         String? solicitaFechaVencimientoCheckout,
-        String? costoDolaresReferencia,
+        double? costoDolaresReferencia,
         dynamic fechaUltimoCambioCabys,
         String? conocidoComo,
-        String? diasGarantia,
+        double? diasGarantia,
         dynamic tipoCalculoComision,
         String? articuloConSerie,
         Familia? familia,
@@ -466,14 +466,14 @@ class Articulo {
         codImpuesto: json["cod_impuesto"],
         habilitarCambiarPrecio: json["habilitar_cambiar_precio"],
         cantidadMinDesc: json["cantidad_min_desc"],
-        porcDescuentoXCant: json["porc_descuento_x_cant"],
+        porcDescuentoXCant: json["porc_descuento_x_cant"] == null ? 0 : json["porc_descuento_x_cant"].toDouble(),
         artControl: json["art_control"],
         artGranel: json["art_granel"],
         aplicaInventario: json["aplica_inventario"],
         activarArticulosRelacionados: json["activar_articulos_relacionados"],
         ubicacion: json["ubicacion"],
-        porcentajeComision: json["porcentaje_comision"],
-        porcentajeUtilidadSugerido: json["porcentaje_utilidad_sugerido"],
+        porcentajeComision: json["porcentaje_comision"] == null ? 0 : json["porcentaje_comision"].toDouble(),
+        porcentajeUtilidadSugerido: json["porcentaje_utilidad_sugerido"] == null ? 0 : json["porcentaje_utilidad_sugerido"].toDouble(),
         notas: json["notas"],
         aplicaComandas: json["aplica_comandas"],
         unidadCompra: json["unidad_compra"],
@@ -510,13 +510,13 @@ class Articulo {
         esReceta: json["es_receta"],
         esInsumo: json["es_insumo"],
         aplicaDevoluciones: json["aplica_devoluciones"],
-        porcDescuentoUltimaCompra: json["porc_descuento_ultima_compra"],
+        porcDescuentoUltimaCompra: json["porc_descuento_ultima_compra"] == null ? 0 : json["porc_descuento_ultima_compra"].toDouble(),
         codUltimaFactura: json["cod_ultima_factura"],
         fechaUltimaVenta: json["fecha_ultima_venta"] != null ? DateTime.parse(json["fecha_ultima_venta"]) : null,
         conceptoFacturacion: json["concepto_facturacion"],
         ventaLibre: json["venta_libre"],
-        costoEspecial: json["costo_especial"],
-        porcentajeUtilidadDeseada: json["porcentaje_utilidad_deseada"],
+        costoEspecial: json["costo_especial"] == null ? 0 : json["costo_especial"].toDouble() ,
+        porcentajeUtilidadDeseada: json["porcentaje_utilidad_deseada"] == null ? 0 : json["porcentaje_utilidad_deseada"].toDouble(),
         omitirMovInvInsumosReceta: json["omitir_mov_inv_insumos_receta"],
         aplicaTimbreOdontologico: json["aplica_timbre_odontologico"],
         precioFijo: json["precio_fijo"],
@@ -535,19 +535,19 @@ class Articulo {
         articuloPortada: json["articulo_portada"],
         servicioSalud: json["servicio_salud"],
         semoviente: json["semoviente"],
-        kilogramos: json["kilogramos"],
-        porcentajeDescuentoCompras: json["porcentaje_descuento_compras"],
-        porcentajeDescuentoVentas: json["porcentaje_descuento_ventas"],
+        kilogramos: json["kilogramos"] == null ? 0 : json["kilogramos"].toDouble(),
+        porcentajeDescuentoCompras: json["porcentaje_descuento_compras"] == null ? 0 : json["porcentaje_descuento_compras"].toDouble(),
+        porcentajeDescuentoVentas: json["porcentaje_descuento_ventas"] == null ? 0 : json["porcentaje_descuento_ventas"].toDouble(),
         bonificacion: json["bonificacion"],
         notaComanda: json["nota_comanda"],
         aplicaRea: json["aplica_rea"],
         tarifaReducidaRea: json["tarifa_reducida_rea"],
         bultosCargaCamionCheckout: json["bultos_carga_camion_checkout"],
         solicitaFechaVencimientoCheckout: json["solicita_fecha_vencimiento_checkout"],
-        costoDolaresReferencia: json["costo_dolares_referencia"],
+        costoDolaresReferencia: json["costo_dolares_referencia"] == null ? 0: json["costo_dolares_referencia"].toDouble(),
         fechaUltimoCambioCabys: json["fecha_ultimo_cambio_cabys"],
         conocidoComo: json["conocido_como"],
-        diasGarantia: json["dias_garantia"],
+        diasGarantia: json["dias_garantia"] == null ? 0 : json["dias_garantia"].toDouble(),
         tipoCalculoComision: json["tipo_calculo_comision"],
         articuloConSerie: json["articulo_con_serie"],
         familia: json["familia"] == null ? null : Familia.fromMap(json["familia"]),

@@ -18,8 +18,7 @@ class ProformaService {
 
   Future<Map<String, dynamic>> addProforma( String baseUrl, PreProforma preProforma, List<PreProformaDetalle> preProformaDetalle, Usuario usuario, Bodega bodega ) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/addproforma',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/addproforma');
 
     final Map<String, dynamic> params = preProforma.toMap();
     params['user'] = usuario.codUsuario;
@@ -46,7 +45,7 @@ class ProformaService {
   Future<List<PreProformaDetalle>> getPreproformaDetalleById( String baseUrl, int id) async {
 
     final url = Uri.http(baseUrl, '/utilitiesapi/public/detallepreproformabyid',
-        {'api_key': Globals.apikey, 'id' : id.toString()});
+        {'id' : id.toString()});
 
     final resp = await http.get(
       url,
@@ -69,8 +68,7 @@ class ProformaService {
 
   Future<Map<String, dynamic>> insertItem( String baseUrl, Map<String, dynamic> data ) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertitem',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertitem');
 
     final resp = await http.post(
       url,
@@ -93,8 +91,7 @@ class ProformaService {
 
   Future<Map<String, dynamic>> updateItemCount( String baseUrl, int id, double cantidad, double total ) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/updateitemcount',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/updateitemcount');
 
     final Map<String, dynamic> params = {
       'id' : id,
@@ -123,8 +120,7 @@ class ProformaService {
 
   Future<bool> deleteItem( String baseUrl, int id ) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/deleteitem',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/deleteitem');
 
     final Map<String, dynamic> params = {
       'id' : id,
@@ -150,8 +146,7 @@ class ProformaService {
 
   Future<Map<String, dynamic>> setClienteToPreproforma( String baseUrl, PreProforma preProforma ) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/setclientetopreproforma',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/setclientetopreproforma');
 
   
     final resp = await http.put(
@@ -175,10 +170,8 @@ class ProformaService {
 
   Future<Map<String, dynamic>> setTotales( String baseUrl, PreProforma preProforma ) async {
 
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/settotales',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/settotales');
 
-  
     final resp = await http.put(
       url,
       body: jsonEncode( preProforma.toMap() ),

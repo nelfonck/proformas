@@ -28,9 +28,7 @@ class ArticuloBloqueService {
       'bodega': bodega.getBodega()?.toMap(),
       'list': mapList
     };
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertarlistaenqupos',
-      {'api_key': Globals.apikey}
-    );
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/insertarlistaenqupos');
 
     final resp = await http.post(
       url,

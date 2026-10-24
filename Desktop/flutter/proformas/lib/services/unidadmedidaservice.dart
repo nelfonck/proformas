@@ -11,10 +11,9 @@ class UnidadMedidaService {
   factory UnidadMedidaService() => _instance ;
 
   Future<Map<String, dynamic>> getUnidadesMedida( String baseUrl ) async {
-    final url = Uri.http(baseUrl, '/utilitiesapi/public/unidadesmedida',
-        {'api_key': Globals.apikey});
+    final url = Uri.http(baseUrl, '/utilitiesapi/public/unidadesmedida');
 
-    final resp = await http.get(url);
+    final resp = await http.get(url, headers: Globals.headers);
 
     if (resp.statusCode == 200) {
 
