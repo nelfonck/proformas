@@ -465,7 +465,7 @@ class Articulo {
         porcDescuentoActual: json["porc_descuento_actual"] == null ? 0 : json["porc_descuento_actual"].toDouble(),
         codImpuesto: json["cod_impuesto"],
         habilitarCambiarPrecio: json["habilitar_cambiar_precio"],
-        cantidadMinDesc: json["cantidad_min_desc"],
+        cantidadMinDesc: int.tryParse(json['cantidad_min_desc']?.toString() ?? '') ?? 0,
         porcDescuentoXCant: json["porc_descuento_x_cant"] == null ? 0 : json["porc_descuento_x_cant"].toDouble(),
         artControl: json["art_control"],
         artGranel: json["art_granel"],
