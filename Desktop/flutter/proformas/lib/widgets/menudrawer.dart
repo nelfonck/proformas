@@ -13,6 +13,7 @@ import 'package:proformas/views/habladoresview.dart';
 import 'package:proformas/views/historyview.dart';
 import 'package:proformas/views/newarticulosbloqueview.dart';
 import 'package:proformas/views/paparazziview.dart';
+import 'package:proformas/views/rotacionview.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -150,14 +151,14 @@ class MenuDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.shopping_basket),
-            title: const Text('Escanear compra'),
+            leading: const Icon(Icons.rotate_90_degrees_ccw),
+            title: const Text('Rotacion'),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => PaparazziView(compania: compania,),
+                  builder: (_) => RotacionView(compania: compania,),
                 ),
                 (route) => false,
                 );
