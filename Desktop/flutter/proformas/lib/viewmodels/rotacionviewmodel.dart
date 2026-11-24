@@ -37,7 +37,7 @@ class Rotacionviewmodel extends ChangeNotifier{
     return resp;
   }
 
-  void clearTxt(){
+  void clearTxt()async{
     codigoController.clear();
     codigoFocus.requestFocus();
     safeNotify();
