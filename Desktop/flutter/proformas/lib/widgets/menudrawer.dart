@@ -12,7 +12,6 @@ import 'package:proformas/views/articulopageview.dart';
 import 'package:proformas/views/habladoresview.dart';
 import 'package:proformas/views/historyview.dart';
 import 'package:proformas/views/newarticulosbloqueview.dart';
-import 'package:proformas/views/paparazziview.dart';
 import 'package:proformas/views/rotacionview.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
