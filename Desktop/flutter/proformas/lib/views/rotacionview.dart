@@ -269,7 +269,7 @@ class _RotacionViewState extends State<RotacionView> {
                         textInputAction: TextInputAction.search,
                         onSubmitted: (_) async {
                           await consultar(context, model);
-                          await Future.delayed(const Duration(milliseconds: 50));
+                          await Future.delayed(const Duration(milliseconds: 300));
                           await SystemChannels.textInput.invokeMethod('TextInput.hide');
                         },
                         decoration: InputDecoration(
